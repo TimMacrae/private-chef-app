@@ -1,0 +1,32 @@
+services:
+  mongo:
+    image: mongo
+    container_name: private-chef-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build: ./server
+    container_name: private-chef-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/chefdb
+    depends_on:
+      - mongo
+
+  client:
+    build: ./client
+    container_name: private-chef-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:
