@@ -1,0 +1,19 @@
+name: Deploy Monorepo
+
+on:
+  workflow_run:
+    workflows: ["Build & Test Monorepo"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    name: Deploy Trigger
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Deployment Approved
+        run: echo "Build succeeded, deployment starting..."
+
+      # Add more logic here for manual deploys later

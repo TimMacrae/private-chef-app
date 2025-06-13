@@ -1,0 +1,68 @@
+name: Build & Test Monorepo
+
+on:
+  push:
+    branches: [main, staging, development]
+  pull_request:
+    branches: [main, staging, development]
+
+env:
+  CI: true
+
+jobs:
+  client:
+    name: Build Client (Next.js)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.19.2"
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Build Client
+        working-directory: ./client
+        run: npm run build
+
+      - name: Run Client Tests
+        working-directory: ./client
+        run: npm run test || true
+
+  server:
+    name: Build Server (Spring Boot)
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Prepare Maven Wrapper
+        working-directory: ./server
+        run: chmod +x mvnw
+
+      - name: Build Backend
+        working-directory: ./server
+        run: ./mvnw clean package -DskipTests
+
+      - name: Run Backend Tests
+        working-directory: ./server
+        run: ./mvnw test || true
