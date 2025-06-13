@@ -52,7 +52,6 @@ docker-compose.override.yml
 client/.next/
 client/out/
 client/node_modules/
-client/package-lock.json
 client/.env
 client/.env.local
 client/.env.*.local
