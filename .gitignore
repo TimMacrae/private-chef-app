@@ -1,6 +1,5 @@
-# --- GLOBAL ---
+# --- GLOBAL NODE ---
 
-# Node
 node_modules/
 npm-debug.log*
 yarn-debug.log*
@@ -8,48 +7,66 @@ yarn-error.log*
 pnpm-debug.log*
 package-lock.json
 
-# Logs
+# --- GLOBAL JAVA ---
+
+target/
+build/
+*.class
+*.jar
+*.war
+*.ear
+
+# --- LOGS ---
+
 *.log
 *.tmp
 
-# OS files
-.DS_Store
-Thumbs.db
+# --- ENV FILES ---
 
-# Env files
 .env
 .env.local
 .env.*.local
+.envrc
 
-# Docker
+# --- SYSTEM FILES ---
+
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- DOCKER ---
+
 docker-data/
+docker-compose.override.yml
 
-# Editor files
+# --- IDE ---
+
 .idea/
 .vscode/
-*.swp
+*.iml
+*.ipr
+*.iws
 
 # --- CLIENT (Next.js) ---
 
 client/.next/
 client/out/
+client/node_modules/
+client/package-lock.json
 client/.env
 client/.env.local
 client/.env.*.local
-client/package-lock.json
-client/node_modules/
 
 # --- SERVER (Spring Boot) ---
 
 server/target/
-server/.mvn/wrapper/
 server/.env
-server/.idea/
 server/.classpath
 server/.project
 server/.settings
-server/package-lock.json
-server/node_modules/
+
+# ✅ DO NOT ignore server/.mvn — keep Maven Wrapper committed!
+# DO NOT ADD: server/.mvn/wrapper/
 
 # --- SHARED TYPES ---
 

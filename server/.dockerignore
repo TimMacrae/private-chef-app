@@ -1,0 +1,14 @@
+HELP.md
+target/
+*.log
+*.tmp
+.idea/
+.vscode/
+.classpath
+.project
+.settings
+build/
+*.iml
+
+# DO NOT exclude Maven Wrapper!
+# KEEP .mvn fully included for Docker builds.
