@@ -19,11 +19,11 @@ import {
 } from "./sidebarMenu.config";
 import { LogOut } from "lucide-react";
 
-export function AppSidebar() {
+export function NavigationSidebar() {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" data-testid="sidebar">
       <SidebarHeader>
-        <SidebarTrigger className="ml-0.5" />
+        <SidebarTrigger className="ml-0.5" data-testid="sidebar-trigger" />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -32,7 +32,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {sidebarMenu.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild data-testid={item.dataTestId}>
                     <a href={item.url}>
                       {item.icon ? <item.icon /> : null}
                       <span>{item.title}</span>
@@ -50,7 +50,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {sidebarMenuCommunity.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild data-testid={item.dataTestId}>
                     <a href={item.url}>
                       {item.icon ? <item.icon /> : null}
                       <span>{item.title}</span>
@@ -68,7 +68,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {sidebarMenuSettings.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild data-testid={item.dataTestId}>
                     <a href={item.url}>
                       {item.icon ? <item.icon /> : null}
                       <span>{item.title}</span>
@@ -81,7 +81,11 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenuButton asChild className="bg-secondary">
+        <SidebarMenuButton
+          asChild
+          className="bg-secondary"
+          data-testid="auth-logout"
+        >
           <a href={apiConfig.URL.AUTH_LOGOUT}>
             <LogOut />
             <span>Logout</span>

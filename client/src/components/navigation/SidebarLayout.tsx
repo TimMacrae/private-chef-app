@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
-import { AppSidebar } from "./AppSidebar";
+import { NavigationSidebar } from "./NavigationSidebar";
 
 export async function SidebarLayout({
   children,
@@ -13,9 +13,12 @@ export async function SidebarLayout({
       style={{ ["--sidebar-width" as string]: "12rem" } as React.CSSProperties}
       defaultOpen={defaultOpen}
     >
-      <AppSidebar />
+      <NavigationSidebar data-testid="navigation-sidebar" />
       <main className="w-full p-4">
-        <SidebarTrigger className="md:hidden mb-2 border-1" />
+        <SidebarTrigger
+          className="md:hidden mb-2 border-1"
+          data-testid="sidebar-trigger-mobile"
+        />
         {children}
       </main>
     </SidebarProvider>
