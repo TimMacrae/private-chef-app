@@ -14,10 +14,10 @@ export async function AuthLogin() {
         priority
       />
       <div className="absolute top-4 right-4 flex items-center justify-center">
-        <Button variant="outline" className="mr-4">
+        <Button data-testid="auth-register" variant="outline" className="mr-4">
           <a href={apiConfig.URL.AUTH_REGISTER}>Register</a>
         </Button>
-        <Button>
+        <Button data-testid="auth-login">
           <a href={apiConfig.URL.AUTH_LOGIN}>Login</a>
         </Button>
       </div>
