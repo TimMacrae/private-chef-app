@@ -27,13 +27,13 @@ jobs:
         working-directory: ./client
         run: npm ci
 
+      - name: Run Vitest Unit Tests
+        working-directory: ./client
+        run: npm run test
+
       - name: Build Client
         working-directory: ./client
         run: npm run build
-
-      - name: Run Client Tests
-        working-directory: ./client
-        run: npm run test || true
 
   server:
     name: Build Server (Spring Boot)
