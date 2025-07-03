@@ -20,6 +20,7 @@ test.describe("navigation", () => {
     await expect(page.getByTestId("sidebar")).not.toBeVisible();
     await expect(page.getByTestId("sidebar-trigger-mobile")).toBeVisible();
     await page.getByTestId("sidebar-trigger-mobile").click();
+    await page.waitForTimeout(1000);
     sidebarMenu.forEach(async (item) => {
       await expect(page.getByTestId(item.dataTestId)).toBeVisible();
     });
