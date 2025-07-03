@@ -1,0 +1,55 @@
+name: Build & Test Monorepo
+
+on:
+  push:
+    branches: [development]
+  pull_request:
+    branches: [development]
+
+env:
+  CI: true
+
+jobs:
+  client:
+    name: Build Client (Next.js)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.19.2"
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Run Vitest Unit Tests
+        working-directory: ./client
+        run: npm run test
+
+      - name: Build Client
+        working-directory: ./client
+        run: npm run build
+
+  server:
+    name: Build Server (Spring Boot)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+
+      - name: Run & Build Maven
+        working-directory: ./server
+        run: mvn -B package --file ./server/pom.xml
