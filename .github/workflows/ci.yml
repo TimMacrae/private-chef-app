@@ -2,9 +2,9 @@ name: Build & Test Monorepo
 
 on:
   push:
-    branches: [main]
+    branches: [development]
   pull_request:
-    branches: [main]
+    branches: [development]
 
 env:
   CI: true
@@ -39,6 +39,18 @@ jobs:
     name: Build Server (Spring Boot)
     runs-on: ubuntu-latest
 
+    env:
+      SPRING_DATA_MONGODB_URI: ${{ secrets.SPRING_DATA_MONGODB_URI }}
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${{ secrets.SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI }}
+      AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+      AUTH0_API_ROLES_NAMESPACE: ${{ secrets.AUTH0_API_ROLES_NAMESPACE }}
+
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -52,12 +64,4 @@ jobs:
 
       - name: Run & Build Maven
         working-directory: ./server
-        run: mvn -B package --file ./server/pom.xml
-  deploy:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: [client, server]
-    steps:
-      - name: Trigger Render.com Deployment
-        run: |
-          curl -X POST ${{secrets.RENDER_DEPLOYMENT_HOOK}}
+        run: mvn -B package --file pom.xml
