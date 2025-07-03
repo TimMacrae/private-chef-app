@@ -39,6 +39,18 @@ jobs:
     name: Build Server (Spring Boot)
     runs-on: ubuntu-latest
 
+    env:
+      SPRING_DATA_MONGODB_URI: ${{ secrets.SPRING_DATA_MONGODB_URI }}
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${{ secrets.SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI }}
+      AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+      AUTH0_API_ROLES_NAMESPACE: ${{ secrets.AUTH0_API_ROLES_NAMESPACE }}
+
+    services:
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
