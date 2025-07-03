@@ -2,9 +2,9 @@ name: Build & Test Monorepo
 
 on:
   push:
-    branches: [main, staging, development]
+    branches: [main]
   pull_request:
-    branches: [main, staging, development]
+    branches: [main]
 
 env:
   CI: true
@@ -39,12 +39,6 @@ jobs:
     name: Build Server (Spring Boot)
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo
-        ports:
-          - 27017:27017
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -54,15 +48,16 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "21"
+          cache: "maven"
 
-      - name: Prepare Maven Wrapper
+      - name: Run & Build Maven
         working-directory: ./server
-        run: chmod +x mvnw
-
-      - name: Build Backend
-        working-directory: ./server
-        run: ./mvnw clean package -DskipTests
-
-      - name: Run Backend Tests
-        working-directory: ./server
-        run: ./mvnw test || true
+        run: mvn -B package --file ./server/pom.xml
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [client, server]
+    steps:
+      - name: Trigger Render.com Deployment
+        run: |
+          curl -X POST ${{secrets.RENDER_DEPLOYMENT_HOOK}}
