@@ -52,7 +52,7 @@ jobs:
 
       - name: Run & Build Maven
         working-directory: ./server
-        run: mvn -B package --file ./server/pom.xml
+        run: mvn -B package --file pom.xml
   deploy:
     name: Deploy to Production
     runs-on: ubuntu-latest
