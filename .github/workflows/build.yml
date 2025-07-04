@@ -13,6 +13,14 @@ jobs:
   client:
     name: Build Client (Next.js)
     runs-on: ubuntu-latest
+    env:
+      AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
+      AUTH0_ISSUER_BASE_URL: ${{ secrets.AUTH0_ISSUER_BASE_URL }}
+      AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+      AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+      AUTH0_BASE_URL: ${{ secrets.AUTH0_BASE_URL }}
+      AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
     steps:
       - name: Checkout repository
@@ -38,6 +46,12 @@ jobs:
   server:
     name: Build Server (Spring Boot)
     runs-on: ubuntu-latest
+
+    env:
+      SPRING_DATA_MONGODB_URI: ${{ secrets.SPRING_DATA_MONGODB_URI }}
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${{ secrets.SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI }}
+      AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+      AUTH0_API_ROLES_NAMESPACE: ${{ secrets.AUTH0_API_ROLES_NAMESPACE }}
 
     steps:
       - name: Checkout repository
