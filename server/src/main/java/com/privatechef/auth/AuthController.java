@@ -1,5 +1,6 @@
 package com.privatechef.auth;
 
+import com.privatechef.config.RoutesConfig;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,18 +13,18 @@ import java.util.Map;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(RoutesConfig.API_AUTH)
 public class AuthController {
     private final AuthService authService;
 
-    @GetMapping("/me")
+    @GetMapping(RoutesConfig.ME)
     public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal Jwt jwt) {
 
         Map<String, Object> userInfo = authService.getCurrentUser(jwt);
         return ResponseEntity.ok(userInfo);
     }
 
-    @GetMapping("/admin")
+    @GetMapping(RoutesConfig.ADMIN)
     public ResponseEntity<Map<String, Object>> getCurrentAdminUser(@AuthenticationPrincipal Jwt jwt) {
 
         Map<String, Object> userAdminInfo = authService.getCurrentAdminUser(jwt);

@@ -1,5 +1,6 @@
 package com.privatechef.auth;
 
+import com.privatechef.config.RoutesConfig;
 import com.privatechef.utils.mocks.MockJwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class AuthControllerTest {
 
     @Test
     void shouldReturnUnauthorizedWithoutToken() throws Exception {
-        mockMvc.perform(get("/api/auth/admin"))
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldAllowAdminAccessWithRole() throws Exception {
-        mockMvc.perform(get("/api/auth/admin")
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN)
                         .with(authentication(MockJwtUtils.createAdminToken())))
                 .andExpect(status().isOk());
     }
@@ -37,7 +38,7 @@ public class AuthControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void shouldForbidAccessWithoutAdminRole() throws Exception {
-        mockMvc.perform(get("/api/auth/admin")
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN)
                         .with(authentication(MockJwtUtils.createUserToken())))
                 .andExpect(status().isForbidden());
     }
@@ -45,7 +46,7 @@ public class AuthControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void accessDeniedHandlerNotTheRightPrivileges() throws Exception {
-        mockMvc.perform(get("/api/auth/admin"))
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN))
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("""
                         {

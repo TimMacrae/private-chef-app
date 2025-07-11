@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SecurityConfigIntegrationTest {
-    
+
     SecurityContext context = SecurityContextHolder.createEmptyContext();
 
     @Autowired
@@ -32,7 +32,7 @@ public class SecurityConfigIntegrationTest {
 
     @Test
     void shouldReturnUnauthorizedWithoutToken() throws Exception {
-        mockMvc.perform(get("/api/auth/admin"))
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -42,7 +42,7 @@ public class SecurityConfigIntegrationTest {
         context.setAuthentication(MockJwtUtils.createAdminToken());
         SecurityContextHolder.setContext(context);
 
-        mockMvc.perform(get("/api/auth/admin")
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN)
                         .with(authentication(MockJwtUtils.createAdminToken())))
                 .andExpect(status().isOk());
     }
@@ -50,7 +50,7 @@ public class SecurityConfigIntegrationTest {
     @Test
     @WithMockUser(roles = "USER")
     void shouldForbidAccessWithoutAdminRole() throws Exception {
-        mockMvc.perform(get("/api/auth/admin"))
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN))
                 .andExpect(status().isForbidden());
     }
 
@@ -60,7 +60,7 @@ public class SecurityConfigIntegrationTest {
         context.setAuthentication(MockJwtUtils.createUserToken());
         SecurityContextHolder.setContext(context);
 
-        mockMvc.perform(get("/api/auth/admin")) // no token
+        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN)) // no token
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("""
                         {

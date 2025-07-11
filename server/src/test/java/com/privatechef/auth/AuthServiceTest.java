@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,4 +54,13 @@ public class AuthServiceTest {
         assertEquals("auth0|test-user", user.get("id"));
         assertFalse(user.containsKey("roles"));
     }
+
+    @Test
+    void getCurrentUserId_shouldReturnCurrentUserId() {
+        var jwt = MockJwtUtils.createUserToken().getToken();
+        String userId = authService.getCurrentUserId(jwt);
+        assertNotNull(userId);
+        assertEquals("auth0|test-user", userId);
+    }
+    
 }

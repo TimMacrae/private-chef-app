@@ -36,4 +36,9 @@ public class AuthService {
         }
         return currentAdminUser;
     }
+
+    public String getCurrentUserId(Jwt jwt) {
+        if (jwt.getClaim("sub") == null) throw new IllegalArgumentException("No user id found in jwt");
+        return jwt.getClaim("sub");
+    }
 }
