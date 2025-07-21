@@ -9,7 +9,7 @@ class PreferencesModelNotFoundTest {
     @Test
     void shouldContainCorrectMessage_whenConstructed() {
         String id = "123";
-        PreferencesModelNotFound exception = assertThrows(
+        assertThrows(
                 PreferencesModelNotFound.class,
                 () -> {
                     throw new PreferencesModelNotFound(id);

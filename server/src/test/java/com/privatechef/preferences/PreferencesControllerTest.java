@@ -110,7 +110,7 @@ class PreferencesControllerTest {
 
         Mockito.when(preferencesService.updateUserPreferences(userId, request)).thenReturn(updated);
 
-        mockMvc.perform(patch(RoutesConfig.API_PREFERENCES)
+        mockMvc.perform(put(RoutesConfig.API_PREFERENCES)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -141,7 +141,7 @@ class PreferencesControllerTest {
         when(preferencesService.updateUserPreferences(eq(userId), any(PreferencesDto.class)))
                 .thenThrow(new PreferencesModelNotFound(userId));
 
-        mockMvc.perform(patch(RoutesConfig.API_PREFERENCES)
+        mockMvc.perform(put(RoutesConfig.API_PREFERENCES)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

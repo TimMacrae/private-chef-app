@@ -6,7 +6,6 @@ import com.privatechef.preferences.model.NutritionalGoalsModel;
 import com.privatechef.preferences.model.SeasonalPreferencesModel;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -10,42 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-//@Service
-//@AllArgsConstructor
-//public class PreferencesService {
-//
-//    private final PreferencesRepository preferencesRepository;
-//    private final PreferencesMapper preferencesMapper;
-//
-//    PreferencesDto getUserPreferences(String userId) {
-//        Optional<PreferencesModel> userPreferences = preferencesRepository.findByUserId(userId);
-//
-//        if (userPreferences.isPresent()) {
-//            return preferencesMapper.toDto(userPreferences.get());
-//        }
-//
-//        PreferencesModel newUserPreferences = new PreferencesModel(userId);
-//        preferencesRepository.save(newUserPreferences);
-//
-//        return preferencesMapper.toDto(newUserPreferences);
-//    }
-//
-//    PreferencesDto updateUserPreferences(@NotNull PreferencesDto userPreferencesRequest) {
-//        PreferencesModel userPreferencesModel = preferencesRepository.findPreferencesModelById(userPreferencesRequest.getId())
-//                .orElseThrow(() -> new PreferencesModelNotFound(userPreferencesRequest.getId()));
-//
-//        System.out.println("userPreferencesRequest: " + userPreferencesRequest);
-//        System.out.println("userPreferencesModel: " + userPreferencesModel);
-//
-//        preferencesMapper.updateModelFromDto(userPreferencesRequest, userPreferencesModel);
-//
-//        PreferencesModel updatedModel = preferencesRepository.save(userPreferencesModel);
-//        System.out.println("updatedModel: " + updatedModel);
-//        return preferencesMapper.toDto(updatedModel);
-//    }
-//}
-
-
 @Service
 @AllArgsConstructor
 public class PreferencesService {
