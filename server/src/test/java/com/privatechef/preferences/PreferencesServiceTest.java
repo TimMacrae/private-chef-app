@@ -10,6 +10,9 @@ import com.privatechef.preferences.repository.PreferencesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -21,12 +24,15 @@ import static org.mockito.Mockito.*;
 
 class PreferencesServiceTest {
 
+    @Mock
     private PreferencesRepository preferencesRepository;
+
+    @InjectMocks
     private PreferencesService preferencesService;
 
     @BeforeEach
     void setUp() {
-        preferencesRepository = mock(PreferencesRepository.class);
+        MockitoAnnotations.openMocks(this);
         PreferencesMapper preferencesMapper = new PreferencesMapper(); // Real mapper
         preferencesService = new PreferencesService(preferencesRepository, preferencesMapper);
     }

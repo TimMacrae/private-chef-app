@@ -15,12 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("message", "An unexpected error occurred.");
-        body.put("details", ex.getMessage());
-        body.put("timestamp", LocalDateTime.now());
-        body.put("path", request.getDescription(false));
-
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+        ExceptionMessage exceptionMessage = new ExceptionMessage(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

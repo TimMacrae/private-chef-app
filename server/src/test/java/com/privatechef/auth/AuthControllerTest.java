@@ -50,7 +50,7 @@ public class AuthControllerTest {
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("""
                         {
-                            "error": "You have not the right privileges"
+                            "message": "You have not the right privileges"
                         }
                         """));
     }

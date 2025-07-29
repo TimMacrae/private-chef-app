@@ -45,7 +45,7 @@ public class SecurityConfig {
                 response.setContentType("application/json");
                 response.getWriter().write("""
                             {
-                              "error": "You have not the right privileges"
+                              "message": "You have not the right privileges"
                             }
                         """);
             });

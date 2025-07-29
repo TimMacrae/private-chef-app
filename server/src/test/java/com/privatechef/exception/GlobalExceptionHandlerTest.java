@@ -21,12 +21,11 @@ class GlobalExceptionHandlerTest {
         ResponseEntity<Object> response = handler.handleAllExceptions(ex, request);
 
         assertEquals(500, response.getStatusCode().value());
-        assertInstanceOf(Map.class, response.getBody());
+        assertInstanceOf(ExceptionMessage.class, response.getBody());
 
-        Map<?, ?> body = (Map<?, ?>) response.getBody();
-        assertEquals("An unexpected error occurred.", body.get("message"));
-        assertEquals("Test exception", body.get("details"));
-        assertEquals("/test/path", body.get("path"));
-        assertNotNull(body.get("timestamp"));
+        ExceptionMessage body = (ExceptionMessage) response.getBody();
+        assertEquals("Test exception", body.message());
+        assertEquals("/test/path", body.path());
+        assertNotNull(body.timestamp());
     }
 }

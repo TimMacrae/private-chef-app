@@ -3,6 +3,7 @@ package com.privatechef.preferences;
 
 import com.privatechef.auth.AuthService;
 import com.privatechef.config.RoutesConfig;
+import com.privatechef.exception.ExceptionMessage;
 import com.privatechef.exception.PreferencesModelNotFound;
 import com.privatechef.preferences.dto.PreferencesDto;
 import jakarta.validation.Valid;
@@ -13,11 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @RestController
 @AllArgsConstructor
@@ -40,11 +36,8 @@ public class PreferencesController {
 
     // Controller-level exception handler
     @ExceptionHandler(PreferencesModelNotFound.class)
-    public ResponseEntity<Map<String, String>> handlePreferencesNotFound(PreferencesModelNotFound ex, WebRequest request) {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", ex.getMessage());
-        response.put("timestamp", String.valueOf(LocalDateTime.now()));
-        response.put("path", request.getDescription(false));
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ExceptionMessage> handlePreferencesNotFound(PreferencesModelNotFound ex, WebRequest request) {
+        ExceptionMessage exceptionMessage = new ExceptionMessage(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }
 }

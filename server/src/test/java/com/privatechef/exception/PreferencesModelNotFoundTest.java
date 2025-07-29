@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PreferencesModelNotFoundTest {
 
     @Test
-    void shouldContainCorrectMessage_whenConstructed() {
+    void preferencesModelNotFound_shouldContainCorrectMessage() {
         String id = "123";
         assertThrows(
                 PreferencesModelNotFound.class,

@@ -7,14 +7,20 @@ import com.privatechef.exception.PreferencesModelNotFound;
 import com.privatechef.preferences.dto.PreferencesDto;
 import com.privatechef.preferences.model.BudgetLevel;
 import com.privatechef.preferences.model.CookingSkillLevel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -28,7 +34,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = PreferencesController.class)
+@SpringBootTest()
+@AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class PreferencesControllerTest {
 
     @Autowired
@@ -88,7 +96,6 @@ class PreferencesControllerTest {
         int maxPrepTimeMinutes = 60;
         CookingSkillLevel cookingSkillLevel = CookingSkillLevel.values()[0];
 
-
         PreferencesDto request = new PreferencesDto();
         request.setId(id);
         request.setLikes(likes);
@@ -107,7 +114,7 @@ class PreferencesControllerTest {
         updated.setCookingSkillLevel(cookingSkillLevel);
         updated.setLikes(likes);
 
-
+        Mockito.when(authService.getCurrentUserId(Mockito.any())).thenReturn(userId);
         Mockito.when(preferencesService.updateUserPreferences(userId, request)).thenReturn(updated);
 
         mockMvc.perform(put(RoutesConfig.API_PREFERENCES)
