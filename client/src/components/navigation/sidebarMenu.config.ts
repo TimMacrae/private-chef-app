@@ -1,3 +1,4 @@
+import { apiConfig } from "@/lib/api/apiConfig";
 import {
   Calendar,
   Home,
@@ -66,7 +67,7 @@ export const sidebarMenuCommunity: SidebarMenuItem[] = [
 export const sidebarMenuSettings: SidebarMenuItem[] = [
   {
     title: "Preferences",
-    url: "#",
+    url: apiConfig.URL.PREFERENCES,
     icon: BookHeart,
     dataTestId: "sidebar-item-preferences",
   },
