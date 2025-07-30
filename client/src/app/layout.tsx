@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ReactQueryProvider from "../lib/reactQueryProvider";
+import ReactQueryProvider from "../lib/react-query-provider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { SidebarLayout } from "@/components/navigation/SidebarLayout";
+import { SidebarLayout } from "@/components/navigation/sidebar-layout";
 import { auth0 } from "@/lib/auth/auth0";
-import { AuthLogin } from "@/lib/auth/AuthLogin";
+import { AuthLogin } from "@/lib/auth/auth-login";
 
 // Fonts
 const geistSans = Geist({

@@ -11,12 +11,12 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { apiConfig } from "@/lib/api/apiConfig";
+import { apiConfig } from "@/lib/api/api-config";
 import {
   sidebarMenu,
   sidebarMenuCommunity,
   sidebarMenuSettings,
-} from "./sidebarMenu.config";
+} from "./sidebar-menu.config";
 import { LogOut } from "lucide-react";
 
 export function NavigationSidebar() {

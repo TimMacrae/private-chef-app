@@ -1,6 +1,6 @@
 // client/src/lib/apiClient/index.ts
 
-import { request } from "./requestHandler";
+import { request } from "./api-request-handler";
 import { ZodSchema } from "zod";
 
 export const apiClient = {

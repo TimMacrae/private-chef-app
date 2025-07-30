@@ -1,4 +1,4 @@
-import { apiConfig } from "@/lib/api/apiConfig";
+import { apiConfig } from "@/lib/api/api-config";
 import {
   Calendar,
   Home,
