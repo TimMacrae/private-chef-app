@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { Terminal } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 
 interface FeedbackMessageErrorProps {
   title?: string;
@@ -13,7 +13,7 @@ export const FeedbackMessageError = ({
 }: FeedbackMessageErrorProps) => {
   return (
     <Alert variant="destructive">
-      <Terminal />
+      <AlertCircleIcon />
       <AlertTitle>{title || "An error occurred"}</AlertTitle>
       <AlertDescription>
         {message || "Please try again later."}
