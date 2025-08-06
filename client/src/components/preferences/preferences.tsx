@@ -4,7 +4,7 @@ import { usePreferences } from "@/hooks/query/use-preferences.query";
 import { FeedbackMessageError } from "../feedback/feedback-message-error";
 import { LayoutContentTitle } from "../layout/layout-content-title";
 import { PreferenceSection } from "./preference-section";
-import { PreferenceItemList } from "./preferences-item-list";
+import { PreferenceItemList } from "./preferences-inputs/preferences-item-list";
 
 export function Preferences() {
   const { data: preferences, isLoading, error } = usePreferences();
