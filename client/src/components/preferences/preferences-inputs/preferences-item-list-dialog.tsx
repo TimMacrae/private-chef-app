@@ -12,28 +12,51 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { PlusIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useAddPreferenceItem } from "../mutation/use-add-preferences.mutation";
+import { useQueryClient } from "@tanstack/react-query";
+import { apiConfig } from "@/lib/api/api-config";
+import { toast } from "sonner";
+import { PreferenceArrayKeys, Preferences } from "../preferences.type";
 
 interface PreferencesItemListDialogProps {
-  isDialogOpen: boolean;
-  setIsDialogOpen: (open: boolean) => void;
   title: string;
-  addItemMutation: ReturnType<typeof useAddPreferenceItem>;
-  newItem: string;
-  setNewItem: (item: string) => void;
-  handleAddItem: (e: React.FormEvent) => void;
+  preferenceKey: keyof PreferenceArrayKeys;
 }
 
 export function PreferencesItemListDialog({
-  isDialogOpen,
-  setIsDialogOpen,
+  preferenceKey,
   title,
-  addItemMutation,
-  newItem,
-  setNewItem,
-  handleAddItem,
 }: PreferencesItemListDialogProps) {
+  const queryClient = useQueryClient();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newItem, setNewItem] = useState("");
+
+  const addItemMutation = useAddPreferenceItem();
+
+  const handleAddItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newItem.trim()) return;
+
+    const currentData = queryClient.getQueryData<Preferences>([
+      apiConfig.QUERY_KEYS.PREFERENCES,
+    ]);
+
+    if (!currentData) {
+      toast.error("No preferences data available");
+      return;
+    }
+
+    await addItemMutation.mutateAsync({
+      field: preferenceKey,
+      item: newItem.trim().toLowerCase(),
+      originalData: currentData,
+    });
+
+    setNewItem("");
+    setIsDialogOpen(false);
+  };
+
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
