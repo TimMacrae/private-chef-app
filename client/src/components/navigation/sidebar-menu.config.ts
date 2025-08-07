@@ -15,7 +15,7 @@ import {
 export type SidebarMenuItem = {
   title: string;
   url: string; // Route path
-  icon?: React.ElementType; // Optional: for icon components
+  icon: React.ElementType; // Optional: for icon components
   children?: SidebarMenuItem[]; // Optional: for nested menus
   disabled?: boolean; // Optional: for disabled state
   dataTestId: string; // Optional: for testing purposes

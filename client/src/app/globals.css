@@ -212,7 +212,7 @@
   --sidebar-foreground: #253220; /* #253220 */
   --sidebar-primary: #5a8f65; /* #5A8F65 */
   --sidebar-primary-foreground: #f7faf7; /* #F7FAF7 */
-  --sidebar-accent: #a3c37a; /* #A3C37A */
+  --sidebar-accent: #5a8f65; /* #A3C37A #a3c37a */
   --sidebar-accent-foreground: oklch(0.17 0.03 107);
   --sidebar-border: #dfe8de; /* #DFE8DE */
   --sidebar-ring: #5a8f65; /* #5A8F65 */
