@@ -12,9 +12,9 @@ export function PreferenceItemList({
   preferenceKey,
 }: PreferenceCardProps) {
   return (
-    <div>
-      <div className="flex justify-between align-middle mb-2">
-        <h3 className="font-medium">{title}</h3>
+    <div className="mb-4">
+      <div className="flex mb-2">
+        <h3 className="flex items-center font-medium text-md">{title}</h3>
         <PreferencesItemListDialog
           title={title}
           preferenceKey={preferenceKey}
