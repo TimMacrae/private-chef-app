@@ -15,6 +15,17 @@ export enum CookingSkillLevel {
   MICHELINE_STAR = "MICHELINE_STAR",
 }
 
+export enum MaxPrepTime {
+  MIN_15 = 15,
+  MIN_30 = 30,
+  MIN_45 = 45,
+  MIN_60 = 60,
+  MIN_90 = 90,
+  MIN_120 = 120,
+  MIN_150 = 150,
+  MIN_180 = 180,
+}
+
 // Zod schemas
 export const BudgetLevelSchema = z.nativeEnum(BudgetLevel);
 
@@ -56,7 +67,7 @@ export const PreferencesSchema = z.object({
   seasonalPreferences: SeasonalPreferencesSchema,
 
   // Meal Constraints
-  maxPrepTimeMinutes: z.number().positive(),
+  maxPrepTimeMinutes: z.nativeEnum(MaxPrepTime),
   budgetLevel: BudgetLevelSchema,
 
   // Adaptive System
@@ -81,3 +92,11 @@ export interface PreferenceArrayKeys {
   preferredChefStyles: string[];
   kitchenEquipment: string[];
 }
+
+// Define keys that are single values
+export type PreferenceSingleValueKeys = {
+  maxPrepTimeMinutes: number;
+  budgetLevel: string;
+  autoAdaptBasedOnFeedback: boolean;
+  cookingSkillLevel: string;
+};
