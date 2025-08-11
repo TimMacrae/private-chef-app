@@ -21,18 +21,18 @@ export const useAddPreferenceItem = () => {
       item: string;
       originalData: Preferences;
     }) => {
-      if (!field) {
+      if (!field || !originalData[field]) {
         throw new Error("Preference field is required");
       }
 
       // Use the original data (before optimistic update)
-      const currentArray = (originalData[field] as string[]) || [];
-      const updatedArray = [...currentArray, item];
+      const currentArrayField = originalData[field] as string[];
+      const updatedArrayField = [...currentArrayField, item];
+
+      originalData[field] = updatedArrayField;
 
       // Send entire preferences with updated array via PUT
-      return putUpdatePreferencesClientAction({
-        [field]: updatedArray,
-      });
+      return putUpdatePreferencesClientAction(originalData);
     },
 
     // Optimistic update
