@@ -5,6 +5,7 @@ import { FeedbackMessageError } from "../feedback/feedback-message-error";
 import { LayoutContentTitle } from "../layout/layout-content-title";
 import { PreferenceSection } from "./preference-section";
 import { PreferenceItemList } from "./preferences-inputs/preferences-item-list";
+import { PreferencesItemSelect } from "./preferences-inputs/prefrences-item-select";
 
 export function Preferences() {
   const { data: preferences, isLoading, error } = usePreferences();
@@ -33,7 +34,7 @@ export function Preferences() {
       <LayoutContentTitle title="Preferences" />
 
       {preferences && (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {/* Core Preferences */}
 
           <PreferenceSection title="Core Preferences">
@@ -41,70 +42,40 @@ export function Preferences() {
               title="Dietary Restrictions"
               preferenceKey="dietaryRestrictions"
             />
-
-            <div>
-              <h3 className="font-medium">Allergies:</h3>
-              <p className="text-gray-600">
-                {preferences.allergies.join(", ") || "None"}
-              </p>
-            </div>
-            <div>
-              <span className="font-medium">Likes:</span>
-              <p className="text-gray-600">
-                {preferences.likes.join(", ") || "None specified"}
-              </p>
-            </div>
-            <div>
-              <span className="font-medium">Dislikes:</span>
-              <p className="text-gray-600">
-                {preferences.dislikes.join(", ") || "None specified"}
-              </p>
-            </div>
+            <PreferenceItemList title="Allergies" preferenceKey="allergies" />
+            <PreferenceItemList title="Likes" preferenceKey="likes" />
+            <PreferenceItemList title="Dislikes" preferenceKey="dislikes" />
           </PreferenceSection>
 
-          {/* Culinary Preferences */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 className="text-lg font-semibold mb-4">Culinary Preferences</h2>
-            <div className="space-y-3">
-              <div>
-                <span className="font-medium">Preferred Cuisines:</span>
-                <p className="text-gray-600">
-                  {preferences.preferredCuisines.join(", ") || "None specified"}
-                </p>
-              </div>
-              <div>
-                <span className="font-medium">Chef Styles:</span>
-                <p className="text-gray-600">
-                  {preferences.preferredChefStyles.join(", ") ||
-                    "None specified"}
-                </p>
-              </div>
-            </div>
-          </div>
+          <PreferenceSection title="Culinary Preferences">
+            <PreferenceItemList
+              title="Preferred Cuisines"
+              preferenceKey="preferredCuisines"
+            />
+            <PreferenceItemList
+              title="Preferred Chef Styles"
+              preferenceKey="preferredChefStyles"
+            />
+          </PreferenceSection>
 
           {/* Meal Constraints */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 className="text-lg font-semibold mb-4">Meal Constraints</h2>
-            <div className="space-y-3">
-              <div>
-                <span className="font-medium">Max Prep Time:</span>
-                <p className="text-gray-600">
-                  {preferences.maxPrepTimeMinutes} minutes
-                </p>
-              </div>
-              <div>
-                <span className="font-medium">Budget Level:</span>
-                <p className="text-gray-600">{preferences.budgetLevel}</p>
-              </div>
-              <div>
-                <span className="font-medium">Cooking Skill:</span>
-                <p className="text-gray-600">{preferences.cookingSkillLevel}</p>
-              </div>
-            </div>
-          </div>
+          <PreferenceSection title="Meal Constraints">
+            <PreferencesItemSelect
+              title="Max Prep Time"
+              preferenceKey="maxPrepTimeMinutes"
+            />
+            <PreferencesItemSelect
+              title="Budget Level"
+              preferenceKey="budgetLevel"
+            />
+            <PreferencesItemSelect
+              title="Cooking Skill Level"
+              preferenceKey="cookingSkillLevel"
+            />
+          </PreferenceSection>
 
           {/* Kitchen Equipment */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border">
+          {/* <div className="bg-white p-6 rounded-lg shadow-sm border">
             <h2 className="text-lg font-semibold mb-4">Kitchen Setup</h2>
             <div className="space-y-3">
               <div>
@@ -122,7 +93,7 @@ export function Preferences() {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
     </>
