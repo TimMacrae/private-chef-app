@@ -27,15 +27,18 @@ export const useRemovePreferenceItem = () => {
         throw new Error(`Field ${field} does not exist in preferences`);
       }
 
-      const currentArray = (currentPreferences[field] as string[]) || [];
-      const updatedArray = currentArray.filter(
+      // Use the original data (before optimistic update)
+      const currentArrayField = currentPreferences[field] as string[];
+      const updatedArrayField = currentArrayField.filter(
         (existingItem) => existingItem !== item
       );
 
+      currentPreferences[field] = updatedArrayField;
+
       // Send entire preferences with updated array via PUT
-      return putUpdatePreferencesClientAction({
-        [field]: updatedArray,
-      });
+      return putUpdatePreferencesClientAction(currentPreferences);
+
+      // Send entire preferences with updated array via PUT
     },
 
     onMutate: async ({ field, item }) => {
