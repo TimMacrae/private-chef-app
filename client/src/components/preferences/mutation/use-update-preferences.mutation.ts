@@ -1,6 +1,6 @@
 import { apiConfig } from "@/lib/api/api-config";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { Preferences } from "../preferences.type";
+import { Preferences, PreferenceSingleValueKeys } from "../preferences.type";
 import { putUpdatePreferencesClientAction } from "@/app/actions/preferences-client.actions";
 import { toast } from "sonner";
 
@@ -8,9 +8,29 @@ export const useUpdatePreferences = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: putUpdatePreferencesClientAction,
+    mutationFn: ({
+      field,
+      value,
+      originalData,
+    }: {
+      field: keyof PreferenceSingleValueKeys;
+      value: string | number | boolean;
+      originalData: Preferences;
+    }) => {
+      if (!field) {
+        throw new Error("Preference field is required");
+      }
 
-    onMutate: async (newPreferences) => {
+      const updatedData = {
+        ...originalData,
+        [field]: value,
+      };
+
+      return putUpdatePreferencesClientAction(updatedData);
+    },
+
+    // Optimistic update
+    onMutate: async ({ field, value }) => {
       await queryClient.cancelQueries({
         queryKey: [apiConfig.QUERY_KEYS.PREFERENCES],
       });
@@ -19,18 +39,39 @@ export const useUpdatePreferences = () => {
         apiConfig.QUERY_KEYS.PREFERENCES,
       ]);
 
-      if (previousPreferences) {
-        queryClient.setQueryData([apiConfig.QUERY_KEYS.PREFERENCES], {
-          ...previousPreferences,
-          ...newPreferences,
-        });
+      if (!field) {
+        throw new Error("Preference field is required");
       }
 
-      return { previousPreferences };
+      if (!previousPreferences) {
+        throw new Error("No preferences data available");
+      }
+
+      const updatedPreferences = {
+        ...previousPreferences,
+        [field]: value,
+      };
+
+      // Update cache optimistically
+      queryClient.setQueryData(
+        [apiConfig.QUERY_KEYS.PREFERENCES],
+        updatedPreferences
+      );
+
+      return {
+        previousPreferences,
+        originalData: previousPreferences,
+      };
     },
 
-    onSuccess: () => {
-      toast.success("Preferences updated successfully");
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData([apiConfig.QUERY_KEYS.PREFERENCES], data);
+
+      // Format the success message based on the field type
+      const fieldLabel = formatFieldLabel(variables.field);
+      const valueLabel = formatValueLabel(variables.field, variables.value);
+
+      toast.success(`Updated ${fieldLabel} to ${valueLabel}`);
     },
 
     onError: (error, variables, context) => {
@@ -40,9 +81,12 @@ export const useUpdatePreferences = () => {
           context.previousPreferences
         );
       }
+
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
-      toast.error(`Failed to remove "${variables}": ${errorMessage}`);
+
+      const fieldLabel = formatFieldLabel(variables.field);
+      toast.error(`Failed to update ${fieldLabel}: ${errorMessage}`);
     },
 
     onSettled: () => {
@@ -51,4 +95,38 @@ export const useUpdatePreferences = () => {
       });
     },
   });
+};
+
+// Helper functions for better UX messages
+const formatFieldLabel = (field: keyof PreferenceSingleValueKeys): string => {
+  switch (field) {
+    case "maxPrepTimeMinutes":
+      return "maximum prep time";
+    case "budgetLevel":
+      return "budget level";
+    case "autoAdaptBasedOnFeedback":
+      return "auto-adapt setting";
+    case "cookingSkillLevel":
+      return "cooking skill level";
+    default:
+      return field;
+  }
+};
+
+const formatValueLabel = (
+  field: keyof PreferenceSingleValueKeys,
+  value: string | number | boolean
+): string => {
+  switch (field) {
+    case "maxPrepTimeMinutes":
+      return `${value} minutes`;
+    case "budgetLevel":
+      return value.toString().toLowerCase();
+    case "autoAdaptBasedOnFeedback":
+      return value ? "enabled" : "disabled";
+    case "cookingSkillLevel":
+      return value.toString().replace("_", " ").toLowerCase();
+    default:
+      return value.toString();
+  }
 };
