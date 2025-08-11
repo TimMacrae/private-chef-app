@@ -63,11 +63,10 @@ export function PreferencesItemListDialog({
         <Button
           variant="link"
           size="sm"
-          className="hover:none text-sidebar-foreground cursor-pointer gap-0"
+          className="hover:none text-sidebar-foreground cursor-pointer gap-0 ml-1"
           disabled={addItemMutation.isPending}
         >
-          <PlusIcon className="h-4 w-4 mr-1" />
-          Add
+          <PlusIcon className="h-4 w-4" />
         </Button>
       </DialogTrigger>
 
