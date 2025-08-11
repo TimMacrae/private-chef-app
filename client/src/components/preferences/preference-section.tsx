@@ -7,7 +7,7 @@ export const PreferenceSection = ({
   children,
 }: PreferenceSectionProps) => {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border">
+    <div className="mt-4">
       <h2 className="text-lg font-semibold mb-4">{title}</h2>
       <div className="space-y-3">{children}</div>
     </div>
