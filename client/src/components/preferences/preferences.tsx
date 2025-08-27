@@ -12,7 +12,10 @@ export function Preferences() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center p-8">
+      <div
+        className="flex justify-center items-center p-8"
+        data-testid="loading-container"
+      >
         <div className="text-lg">Loading your preferences...</div>
       </div>
     );
@@ -34,10 +37,16 @@ export function Preferences() {
       <LayoutContentTitle title="Preferences" />
 
       {preferences && (
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div
+          className="grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+          data-testid="preferences-section-container"
+        >
           {/* Core Preferences */}
 
-          <PreferenceSection title="Core Preferences">
+          <PreferenceSection
+            dataTestId="preferences-section-core-preferences"
+            title="Core Preferences"
+          >
             <PreferenceItemList
               title="Dietary Restrictions"
               preferenceKey="dietaryRestrictions"
@@ -47,7 +56,10 @@ export function Preferences() {
             <PreferenceItemList title="Dislikes" preferenceKey="dislikes" />
           </PreferenceSection>
 
-          <PreferenceSection title="Culinary Preferences">
+          <PreferenceSection
+            dataTestId="preferences-section-culinary-preferences"
+            title="Culinary Preferences"
+          >
             <PreferenceItemList
               title="Preferred Cuisines"
               preferenceKey="preferredCuisines"
@@ -56,10 +68,23 @@ export function Preferences() {
               title="Preferred Chef Styles"
               preferenceKey="preferredChefStyles"
             />
+            {/* Seasonal Preferences */}
+            <PreferenceSection
+              dataTestId="preferences-section-season"
+              title="Seasonal Preferences"
+            >
+              <PreferenceItemList
+                title="Spring"
+                preferenceKey="seasonalPreferences.spring"
+              />
+            </PreferenceSection>
           </PreferenceSection>
 
           {/* Meal Constraints */}
-          <PreferenceSection title="Meal Constraints">
+          <PreferenceSection
+            dataTestId="preferences-section-meal-constraints"
+            title="Meal Constraints"
+          >
             <PreferencesItemSelect
               title="Max Prep Time"
               preferenceKey="maxPrepTimeMinutes"
