@@ -57,7 +57,9 @@ export function PreferencesItemSelect({
 
   return (
     <div>
-      <label htmlFor={preferenceKey}>{title}</label>
+      <label className="font-medium text-md mb-3 block" htmlFor={preferenceKey}>
+        {title}
+      </label>
       <Select
         onValueChange={handleValueChange}
         value={currentValue ? String(currentValue) : ""}
