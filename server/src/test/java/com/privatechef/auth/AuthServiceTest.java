@@ -45,7 +45,7 @@ public class AuthServiceTest {
 
     @Test
     void shouldReturnAdminUserWithoutRolesIfMissing() {
-        var jwt = MockJwtUtils.createUserToken().getToken(); // has no ADMIN role
+        var jwt = MockJwtUtils.createUserToken().getToken();
 
         Map<String, Object> user = authService.getCurrentUser(jwt);
 
