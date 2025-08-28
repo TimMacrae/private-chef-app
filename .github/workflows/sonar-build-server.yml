@@ -34,5 +34,9 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SPRING_DATA_MONGODB_URI: ${{ secrets.SPRING_DATA_MONGODB_URI }}
+          SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: ${{ secrets.SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+          AUTH0_API_ROLES_NAMESPACE: ${{ secrets.AUTH0_API_ROLES_NAMESPACE }}
         working-directory: server
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=timmacrae_private-chef-app-server
