@@ -17,7 +17,7 @@ class CustomJwtAuthenticationConverterTest {
     private final CustomJwtAuthenticationConverter converter = new CustomJwtAuthenticationConverter(ROLE_CLAIM_NAMESPACE);
 
     @Test
-    void shouldReturnGrantedAuthoritiesWhenRolesArePresent() {
+    void convert_shouldReturnGrantedAuthoritiesWhenRolesArePresent() {
         List<String> roles = List.of("admin", "user");
 
         Jwt jwt = buildJwtWithRoles(roles);
@@ -30,7 +30,7 @@ class CustomJwtAuthenticationConverterTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenRolesClaimIsMissing() {
+    void convert_shouldReturnEmptyListWhenRolesClaimIsMissing() {
         Jwt jwt = buildJwtWithRoles(null); // No roles claim
         Collection<GrantedAuthority> authorities = converter.convert(jwt);
 
@@ -39,7 +39,7 @@ class CustomJwtAuthenticationConverterTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenRolesClaimIsEmpty() {
+    void convert_shouldReturnEmptyListWhenRolesClaimIsEmpty() {
         Jwt jwt = buildJwtWithRoles(Collections.emptyList());
         Collection<GrantedAuthority> authorities = converter.convert(jwt);
 

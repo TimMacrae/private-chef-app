@@ -1,4 +1,4 @@
-name: Build & Test Monorepo
+name: Build & Test Monorepo & Deploy
 
 on:
   push:
