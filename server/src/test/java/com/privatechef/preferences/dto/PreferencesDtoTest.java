@@ -27,8 +27,8 @@ class PreferencesDtoTest {
         dto.setExcludedChefStyles(List.of("Classic"));
 
         SeasonalPreferencesModel seasonal = new SeasonalPreferencesModel();
-        seasonal.setSpring(List.of("Spring"));
-        seasonal.setWinter(List.of("Winter"));
+        seasonal.setSpring(false);
+        seasonal.setWinter(true);
         dto.setSeasonalPreferences(seasonal);
 
         dto.setMaxPrepTimeMinutes(45);
