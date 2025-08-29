@@ -56,17 +56,21 @@ export function PreferencesItemSelect({
   };
 
   return (
-    <div>
+    <div data-testid={`preferences-item-select-${preferenceKey}`}>
       <label className="font-medium text-md mb-3 block" htmlFor={preferenceKey}>
         {title}
       </label>
       <Select
+        data-testid="preferences-item-select-button"
         onValueChange={handleValueChange}
         value={currentValue ? String(currentValue) : ""}
         defaultValue={currentValue ? String(currentValue) : ""}
       >
         <SelectTrigger className="w-[200px]">
-          <SelectValue placeholder={`Select ${title.toLowerCase()}`} />
+          <SelectValue
+            data-testid="preferences-item-select-value"
+            placeholder={`Select ${title.toLowerCase()}`}
+          />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
