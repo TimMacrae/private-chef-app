@@ -1,11 +1,11 @@
 package com.privatechef.auth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthService {
@@ -14,7 +14,6 @@ public class AuthService {
     private String ROLES_NAMESPACE;
 
     public Map<String, Object> getCurrentUser(Jwt jwt) {
-        // System.out.println("ME: " + jwt.getClaims());
         Map<String, Object> currentUser = new HashMap<>();
 
         if (jwt.getClaim("sub") != null) {
@@ -24,7 +23,6 @@ public class AuthService {
     }
 
     public Map<String, Object> getCurrentAdminUser(Jwt jwt) {
-        // System.out.println("ME: " + jwt.getClaims());
         Map<String, Object> currentAdminUser = new HashMap<>();
 
         if (jwt.getClaim("sub") != null) {

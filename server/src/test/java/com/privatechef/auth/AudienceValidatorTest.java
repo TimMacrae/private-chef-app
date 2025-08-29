@@ -16,7 +16,7 @@ class AudienceValidatorTest {
     private final AudienceValidator validator = new AudienceValidator(expectedAudience);
 
     @Test
-    void shouldPassValidationWhenAudienceIsValid() {
+    void validate_shouldPassValidationWhenAudienceIsValid() {
         Jwt jwt = buildJwtWithAudiences(List.of(expectedAudience));
         OAuth2TokenValidatorResult result = validator.validate(jwt);
 
@@ -24,7 +24,7 @@ class AudienceValidatorTest {
     }
 
     @Test
-    void shouldFailValidationWhenAudienceIsMissing() {
+    void validate_shouldFailValidationWhenAudienceIsMissing() {
         Jwt jwt = buildJwtWithAudiences(List.of("wrong-audience"));
         OAuth2TokenValidatorResult result = validator.validate(jwt);
 

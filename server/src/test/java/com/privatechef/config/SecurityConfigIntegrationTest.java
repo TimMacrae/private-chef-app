@@ -1,6 +1,5 @@
 package com.privatechef.config;
 
-import com.privatechef.utils.mocks.MockJwtUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +8,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.privatechef.utils.mocks.MockJwtUtils;
+
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SecurityConfigIntegrationTest {
+
 
     SecurityContext context = SecurityContextHolder.createEmptyContext();
 
@@ -31,36 +34,36 @@ public class SecurityConfigIntegrationTest {
     }
 
     @Test
-    void shouldReturnUnauthorizedWithoutToken() throws Exception {
-        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN))
+    void securityConfigIntegration_shouldReturnUnauthorizedWithoutToken() throws Exception {
+        mockMvc.perform(get(EndpointsConfig.AUTH_ADMIN_FULL))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void shouldAllowAdminAccessWithRole() throws Exception {
+    void securityConfigIntegration_shouldAllowAdminAccessWithRole() throws Exception {
         context.setAuthentication(MockJwtUtils.createAdminToken());
         SecurityContextHolder.setContext(context);
 
-        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN)
+        mockMvc.perform(get(EndpointsConfig.AUTH_ADMIN_FULL)
                         .with(authentication(MockJwtUtils.createAdminToken())))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldForbidAccessWithoutAdminRole() throws Exception {
-        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN))
+    void securityConfigIntegration_shouldForbidAccessWithoutAdminRole() throws Exception {
+        mockMvc.perform(get(EndpointsConfig.AUTH_ADMIN_FULL))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void accessDeniedHandlerNotTheRightPrivileges() throws Exception {
+    void securityConfigIntegration_accessDeniedHandlerNotTheRightPrivileges() throws Exception {
         context.setAuthentication(MockJwtUtils.createUserToken());
         SecurityContextHolder.setContext(context);
 
-        mockMvc.perform(get(RoutesConfig.API_AUTH_ADMIN)) // no token
+        mockMvc.perform(get(EndpointsConfig.AUTH_ADMIN_FULL)) // no token
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("""
                         {

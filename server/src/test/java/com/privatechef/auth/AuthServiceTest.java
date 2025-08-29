@@ -3,6 +3,8 @@ package com.privatechef.auth;
 import com.privatechef.utils.mocks.MockJwtUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
@@ -12,17 +14,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AuthServiceTest {
 
+    @InjectMocks
     private AuthService authService;
 
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService();
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(authService, "ROLES_NAMESPACE", "test_role_claim_namespace");
     }
 
     @Test
-    void shouldReturnCurrentUserWithId() {
+    void getCurrentUser_shouldReturnCurrentUserWithId() {
         var jwt = MockJwtUtils.createUserToken().getToken();
 
         Map<String, Object> user = authService.getCurrentUser(jwt);
@@ -32,7 +35,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    void shouldReturnCurrentAdminUserWithRole() {
+    void getCurrentAdminUser_shouldReturnCurrentAdminUserWithRole() {
         var jwt = MockJwtUtils.createAdminToken().getToken();
 
         Map<String, Object> user = authService.getCurrentAdminUser(jwt);
@@ -45,8 +48,8 @@ public class AuthServiceTest {
     }
 
     @Test
-    void shouldReturnAdminUserWithoutRolesIfMissing() {
-        var jwt = MockJwtUtils.createUserToken().getToken(); // has no ADMIN role
+    void getCurrentAdminUser_shouldReturnAdminUserWithoutRolesIfMissing() {
+        var jwt = MockJwtUtils.createUserToken().getToken();
 
         Map<String, Object> user = authService.getCurrentUser(jwt);
 

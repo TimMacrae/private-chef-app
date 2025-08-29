@@ -6,4 +6,8 @@ public record ExceptionMessage(String message, String path, LocalDateTime timest
     public ExceptionMessage(String message, String path) {
         this(message, path, LocalDateTime.now());
     }
+
+    public ExceptionMessage(String message) {
+        this(message, "", LocalDateTime.now());
+    }
 }

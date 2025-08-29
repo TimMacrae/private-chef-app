@@ -1,18 +1,17 @@
 package com.privatechef.exception;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 class GlobalExceptionHandlerTest {
     @Test
-    void testHandleAllExceptions() {
+    void globalExceptionHandler_testHandleAllExceptions() {
         GlobalExceptionHandler handler = new GlobalExceptionHandler();
         Exception ex = new Exception("Test exception");
         WebRequest request = mock(WebRequest.class);
@@ -24,7 +23,7 @@ class GlobalExceptionHandlerTest {
         assertInstanceOf(ExceptionMessage.class, response.getBody());
 
         ExceptionMessage body = (ExceptionMessage) response.getBody();
-        assertEquals("Test exception", body.message());
+        assertEquals("Internal server error: Test exception", body.message());
         assertEquals("/test/path", body.path());
         assertNotNull(body.timestamp());
     }
