@@ -32,10 +32,10 @@ export const BudgetLevelSchema = z.nativeEnum(BudgetLevel);
 export const CookingSkillLevelSchema = z.nativeEnum(CookingSkillLevel);
 
 export const SeasonalPreferencesSchema = z.object({
-  spring: z.array(z.string()),
-  summer: z.array(z.string()),
-  autumn: z.array(z.string()),
-  winter: z.array(z.string()),
+  spring: z.boolean(),
+  summer: z.boolean(),
+  autumn: z.boolean(),
+  winter: z.boolean(),
 });
 
 export const NutritionalGoalsSchema = z
