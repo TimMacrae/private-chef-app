@@ -38,7 +38,7 @@ class PreferencesServiceTest {
     }
 
     @Test
-    void testGetUserPreferences_WhenNotFound_ShouldCreateDefault() {
+    void getUserPreferences_WhenNotFound_ShouldCreateDefault() {
         String userId = "user123";
 
         // Simulate no existing preferences
@@ -55,7 +55,7 @@ class PreferencesServiceTest {
     }
 
     @Test
-    void testGetUserPreferences_WhenFound_ShouldReturnExisting() {
+    void getUserPreferences_WhenFound_ShouldReturnExisting() {
         String userId = "user123";
         PreferencesModel existing = PreferencesModel.builder()
                 .userId(userId)
@@ -74,7 +74,7 @@ class PreferencesServiceTest {
     }
 
     @Test
-    void testUpdateUserPreferences_WhenFound_ShouldUpdate() {
+    void updateUserPreferences_WhenFound_ShouldUpdate() {
         String userId = "user123";
         PreferencesModel existing = PreferencesModel.builder()
                 .userId(userId)
@@ -108,7 +108,7 @@ class PreferencesServiceTest {
     }
 
     @Test
-    void testUpdateUserPreferences_WhenNotFound_ShouldThrow() {
+    void updateUserPreferences_WhenNotFound_ShouldThrow() {
         String userId = "unknownUser";
         PreferencesDto updateDto = new PreferencesDto();
         updateDto.setUserId(userId);

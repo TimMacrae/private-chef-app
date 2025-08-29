@@ -73,7 +73,6 @@ class PreferencesModelTest {
         assertFalse(model.isAutoAdaptBasedOnFeedback());
 
         // cookingSkillLevel
-
         assertNotNull(model.getKitchenEquipment());
         assertTrue(model.getKitchenEquipment().isEmpty());
 
@@ -83,18 +82,10 @@ class PreferencesModelTest {
     @Test
     void seasonalPreferencesModel_shouldInitializeEmptyLists() {
         SeasonalPreferencesModel seasonal = new SeasonalPreferencesModel();
-
-        assertNotNull(seasonal.getSpring());
-        assertTrue(seasonal.getSpring().isEmpty());
-
-        assertNotNull(seasonal.getSummer());
-        assertTrue(seasonal.getSummer().isEmpty());
-
-        assertNotNull(seasonal.getAutumn());
-        assertTrue(seasonal.getAutumn().isEmpty());
-
-        assertNotNull(seasonal.getWinter());
-        assertTrue(seasonal.getWinter().isEmpty());
+        assertFalse(seasonal.isSpring());
+        assertFalse(seasonal.isSummer());
+        assertFalse(seasonal.isAutumn());
+        assertFalse(seasonal.isWinter());
     }
 
     @Test
