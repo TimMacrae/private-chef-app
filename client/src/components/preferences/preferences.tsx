@@ -5,7 +5,7 @@ import { FeedbackMessageError } from "../feedback/feedback-message-error";
 import { LayoutContentTitle } from "../layout/layout-content-title";
 import { PreferenceSection } from "./preference-section";
 import { PreferenceItemList } from "./preferences-inputs/preferences-item-list";
-import { PreferencesItemSelect } from "./preferences-inputs/prefrences-item-select";
+import { PreferencesItemSelect } from "./preferences-inputs/preferences-item-select";
 
 export function Preferences() {
   const { data: preferences, isLoading, error } = usePreferences();
