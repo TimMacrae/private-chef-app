@@ -13,7 +13,7 @@ export const apiConfig = {
     PREFERENCES: "/preferences",
   },
   API: {
-    PREFERENCES: `${BASE_URL}/v1/preferences`,
+    PREFERENCES: `${BASE_URL}/preferences`,
   },
   ENDPOINTS: {
     USER: "/user",
