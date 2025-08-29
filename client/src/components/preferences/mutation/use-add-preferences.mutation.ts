@@ -25,9 +25,15 @@ export const useAddPreferenceItem = () => {
         throw new Error("Preference field is required");
       }
 
-      // Use the original data (before optimistic update)
       const currentArrayField = originalData[field] as string[];
-      const updatedArrayField = [...currentArrayField, item];
+      const newItems = item.split(",").map((i) => i.trim());
+
+      // Filter out duplicates
+      const filteredNewItems = newItems.filter(
+        (newItem) => !currentArrayField.includes(newItem)
+      );
+
+      const updatedArrayField = [...currentArrayField, ...filteredNewItems];
 
       originalData[field] = updatedArrayField;
 
@@ -37,7 +43,6 @@ export const useAddPreferenceItem = () => {
 
     // Optimistic update
     onMutate: async ({ field, item }) => {
-      // Cancel any outgoing refetches
       await queryClient.cancelQueries({
         queryKey: [apiConfig.QUERY_KEYS.PREFERENCES],
       });
@@ -55,13 +60,16 @@ export const useAddPreferenceItem = () => {
       }
 
       const currentArray = (previousPreferences[field] as string[]) || [];
-      if (currentArray.includes(item)) {
-        throw new Error(`"${item}" already exists in ${field}`);
-      }
+      const newItems = item.split(",").map((i) => i.trim());
+
+      // Filter out duplicates
+      const filteredNewItems = newItems.filter(
+        (newItem) => !currentArray.includes(newItem)
+      );
 
       const updatedPreferences = {
         ...previousPreferences,
-        [field]: [...currentArray, item],
+        [field]: [...currentArray, ...filteredNewItems],
       };
 
       // Update cache optimistically
