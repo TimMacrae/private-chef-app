@@ -15,24 +15,7 @@ export function PreferenceList({ preferenceKey }: PreferenceListProps) {
     return <div className="text-gray-500">Loading...</div>;
   }
 
-  // Helper function to get nested values
-  const getNestedValue = (obj: any, path: string): string[] => {
-    return (
-      path.split(".").reduce((current, key) => {
-        return current && current[key] !== undefined ? current[key] : [];
-      }, obj) || []
-    );
-  };
-
-  console.log(
-    preferenceKey.includes(".") && getNestedValue(data, preferenceKey)
-  );
-
-  // Get items using either direct key or nested path
-  const items =
-    typeof preferenceKey === "string" && preferenceKey.includes(".")
-      ? getNestedValue(data, preferenceKey)
-      : data?.[preferenceKey as keyof PreferenceArrayKeys] || [];
+  const items = data?.[preferenceKey as keyof PreferenceArrayKeys] || [];
 
   const handleRemoveItem = async (item: string) => {
     await removeItemMutation.mutateAsync({
