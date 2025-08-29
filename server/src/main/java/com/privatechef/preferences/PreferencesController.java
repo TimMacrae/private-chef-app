@@ -2,7 +2,7 @@ package com.privatechef.preferences;
 
 
 import com.privatechef.auth.AuthService;
-import com.privatechef.config.RoutesConfig;
+import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.ExceptionMessage;
 import com.privatechef.exception.PreferencesModelNotFound;
 import com.privatechef.preferences.dto.PreferencesDto;
@@ -17,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(RoutesConfig.API_PREFERENCES)
+@RequestMapping(EndpointsConfig.PREFERENCES)
 public class PreferencesController {
     private final PreferencesService preferencesService;
     private final AuthService authService;
@@ -34,10 +34,10 @@ public class PreferencesController {
         return ResponseEntity.ok(updatedUserPreferences);
     }
 
-    // Controller-level exception handler
+    // controller-level exceptions
     @ExceptionHandler(PreferencesModelNotFound.class)
-    public ResponseEntity<ExceptionMessage> handlePreferencesNotFound(PreferencesModelNotFound ex, WebRequest request) {
-        ExceptionMessage exceptionMessage = new ExceptionMessage(ex.getMessage(), request.getDescription(false));
+    public ResponseEntity<ExceptionMessage> handlePreferencesNotFound(PreferencesModelNotFound exception, WebRequest request) {
+        ExceptionMessage exceptionMessage = new ExceptionMessage(exception.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }
 }

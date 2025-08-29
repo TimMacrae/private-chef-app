@@ -2,23 +2,19 @@ package com.privatechef.preferences;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.privatechef.auth.AuthService;
-import com.privatechef.config.RoutesConfig;
+import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.PreferencesModelNotFound;
 import com.privatechef.preferences.dto.PreferencesDto;
 import com.privatechef.preferences.model.BudgetLevel;
 import com.privatechef.preferences.model.CookingSkillLevel;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.TestingAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -66,7 +62,7 @@ class PreferencesControllerTest {
     }
 
     @Test
-    void shouldReturnUserPreferences() throws Exception {
+    void getUserPreferences_shouldReturnUserPreferences() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String id = "id12";
         String userId = "user-123";
@@ -74,12 +70,11 @@ class PreferencesControllerTest {
         PreferencesDto preferences = new PreferencesDto();
         preferences.setId(id);
         preferences.setUserId(userId);
-
-
+        
         Mockito.when(authService.getCurrentUserId(any())).thenReturn(userId);
         Mockito.when(preferencesService.getUserPreferences(userId)).thenReturn(preferences);
 
-        mockMvc.perform(get(RoutesConfig.API_PREFERENCES)
+        mockMvc.perform(get(EndpointsConfig.PREFERENCES)
                         .with(jwt().jwt(jwt)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
@@ -87,7 +82,7 @@ class PreferencesControllerTest {
     }
 
     @Test
-    void shouldUpdateUserPreferences() throws Exception {
+    void updateUserPreferences_shouldUpdateUserPreferences() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String id = "id12";
         String userId = "user-123";
@@ -117,7 +112,7 @@ class PreferencesControllerTest {
         Mockito.when(authService.getCurrentUserId(Mockito.any())).thenReturn(userId);
         Mockito.when(preferencesService.updateUserPreferences(userId, request)).thenReturn(updated);
 
-        mockMvc.perform(put(RoutesConfig.API_PREFERENCES)
+        mockMvc.perform(put(EndpointsConfig.PREFERENCES)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -132,7 +127,7 @@ class PreferencesControllerTest {
     }
 
     @Test
-    void updateUserPreferencesShould_shouldThrowAnError() throws Exception {
+    void updateUserPreferences_shouldThrowAnError() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String id = "unknown";
         String userId = "unknownUser";
@@ -148,7 +143,7 @@ class PreferencesControllerTest {
         when(preferencesService.updateUserPreferences(eq(userId), any(PreferencesDto.class)))
                 .thenThrow(new PreferencesModelNotFound(userId));
 
-        mockMvc.perform(put(RoutesConfig.API_PREFERENCES)
+        mockMvc.perform(put(EndpointsConfig.PREFERENCES)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
