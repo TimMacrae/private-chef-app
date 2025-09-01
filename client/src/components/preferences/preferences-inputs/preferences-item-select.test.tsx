@@ -1,14 +1,21 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { PreferencesItemSelect } from "./preferences-item-select";
 import { useUpdatePreferences } from "../mutation/use-update-preferences.mutation";
+import {
+  createTestQueryClient,
+  renderWithQueryClient,
+  TestQueryClientProvider,
+} from "@/utils/utils-tests";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { apiConfig } from "@/lib/api/api-config";
 
-// Mock the dependencies
+const mockMutateAsync = vi.fn().mockResolvedValue({});
 vi.mock("../mutation/use-update-preferences.mutation", () => ({
-  useUpdatePreferences: () => ({
-    mutateAsync: vi.fn().mockResolvedValue({}),
-  }),
+  useUpdatePreferences: vi.fn(() => ({
+    mutateAsync: mockMutateAsync,
+  })),
 }));
 
 vi.mock("./preferences-item-select-options", () => ({
@@ -25,24 +32,10 @@ vi.mock("sonner", () => ({
   },
 }));
 
-const createTestQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
-const renderWithQueryClient = (component: React.ReactElement) => {
-  const queryClient = createTestQueryClient();
-  return render(
-    <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>
-  );
-};
-
 describe("PreferencesItemSelect", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockMutateAsync.mockClear();
   });
 
   it("renders default PreferencesItemSelect", () => {
@@ -62,81 +55,62 @@ describe("PreferencesItemSelect", () => {
     ).toBeInTheDocument();
   });
 
-  //   it("displays current value when preferences data exists", () => {
-  //     const queryClient = createTestQueryClient();
-  //     queryClient.setQueryData(["preferences"], {
-  //       maxPrepTimeMinutes: 30,
-  //     });
+  it("displays current value when preferences data exists", () => {
+    render(
+      <TestQueryClientProvider
+        queryKey={apiConfig.QUERY_KEYS.PREFERENCES}
+        state={{ maxPrepTimeMinutes: 30 }}
+      >
+        <PreferencesItemSelect
+          title="Max Prep Time"
+          preferenceKey="maxPrepTimeMinutes"
+        />
+      </TestQueryClientProvider>
+    );
 
-  //     render(
-  //       <QueryClientProvider client={queryClient}>
-  //         <PreferencesItemSelect
-  //           title="Max Prep Time"
-  //           preferenceKey="maxPrepTimeMinutes"
-  //         />
-  //       </QueryClientProvider>
-  //     );
+    expect(
+      screen.getByTestId("preferences-item-select-value")
+    ).toHaveTextContent("30 minutes");
+  });
 
-  //     expect(screen.getByDisplayValue("30")).toBeInTheDocument();
-  //   });
+  it("shows placeholder when no current value", () => {
+    renderWithQueryClient(
+      <PreferencesItemSelect
+        title="Max Prep Time"
+        preferenceKey="maxPrepTimeMinutes"
+      />
+    );
 
-  //   it("shows placeholder when no current value", () => {
-  //     renderWithQueryClient(
-  //       <PreferencesItemSelect
-  //         title="Max Prep Time"
-  //         preferenceKey="maxPrepTimeMinutes"
-  //       />
-  //     );
+    expect(screen.getByText("Select max prep time")).toBeInTheDocument();
+  });
 
-  //     expect(screen.getByText("Select max prep time")).toBeInTheDocument();
-  //   });
+  it("handles value change for numeric preferences", async () => {
+    const queryClient = createTestQueryClient();
+    queryClient.setQueryData([apiConfig.QUERY_KEYS.PREFERENCES], {
+      maxPrepTimeMinutes: 15,
+    });
 
-  //   it("opens select options when clicked", async () => {
-  //     renderWithQueryClient(
-  //       <PreferencesItemSelect
-  //         title="Max Prep Time"
-  //         preferenceKey="maxPrepTimeMinutes"
-  //       />
-  //     );
+    render(
+      <QueryClientProvider client={queryClient}>
+        <PreferencesItemSelect
+          title="Max Prep Time"
+          preferenceKey="maxPrepTimeMinutes"
+        />
+      </QueryClientProvider>
+    );
 
-  //     const selectButton = screen.getByTestId("preferences-item-select-button");
-  //     fireEvent.click(selectButton);
+    const selectButton = screen.getByTestId("preferences-item-select-button");
+    fireEvent.click(selectButton);
 
-  //     await waitFor(() => {
-  //       expect(screen.getByText("15 minutes")).toBeInTheDocument();
-  //       expect(screen.getByText("30 minutes")).toBeInTheDocument();
-  //       expect(screen.getByText("60 minutes")).toBeInTheDocument();
-  //     });
-  //   });
+    await waitFor(() => {
+      const option = screen.getByText("30 minutes");
+      fireEvent.click(option);
+    });
 
-  //   it("handles value change for numeric preferences", async () => {
-  //     const queryClient = createTestQueryClient();
-  //     queryClient.setQueryData(["preferences"], {
-  //       maxPrepTimeMinutes: 15,
-  //     });
-
-  //     render(
-  //       <QueryClientProvider client={queryClient}>
-  //         <PreferencesItemSelect
-  //           title="Max Prep Time"
-  //           preferenceKey="maxPrepTimeMinutes"
-  //         />
-  //       </QueryClientProvider>
-  //     );
-
-  //     const selectButton = screen.getByTestId("preferences-item-select-button");
-  //     fireEvent.click(selectButton);
-
-  //     await waitFor(() => {
-  //       const option = screen.getByText("30 minutes");
-  //       fireEvent.click(option);
-  //     });
-
-  //     // The mutation should be called with the parsed integer value
-  //     expect(useUpdatePreferences().mutateAsync).toHaveBeenCalledWith({
-  //       field: "maxPrepTimeMinutes",
-  //       value: 30,
-  //       originalData: { maxPrepTimeMinutes: 15 },
-  //     });
-  //   });
+    expect(useUpdatePreferences().mutateAsync).toHaveBeenCalledWith({
+      field: "maxPrepTimeMinutes",
+      value: 30,
+      originalData: { maxPrepTimeMinutes: 15 },
+    });
+  });
 });
