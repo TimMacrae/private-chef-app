@@ -24,6 +24,7 @@ export function PreferenceItemBadge({
       className={`bg-primary text-white flex items-center gap-2 ${
         isButtonHovered ? "bg-primary/80 " : "bg-primary"
       } transition-colors duration-200`}
+      data-testid={`preference-item-badge-${index}`}
     >
       {item}
       <button
@@ -32,6 +33,7 @@ export function PreferenceItemBadge({
         disabled={removeItemMutation.isPending}
         onMouseEnter={() => setIsButtonHovered(true)}
         onMouseLeave={() => setIsButtonHovered(false)}
+        data-testid={`preference-item-badge-remove-item-${index}`}
       >
         <PlusIcon className="h-3 w-3 rotate-45" />
       </button>

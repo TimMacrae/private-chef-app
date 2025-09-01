@@ -58,7 +58,11 @@ export function PreferencesItemListDialog({
   };
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={setIsDialogOpen}
+      data-testid={`preference-item-list-dialog-${preferenceKey}-button`}
+    >
       <DialogTrigger asChild>
         <Button
           variant="link"
