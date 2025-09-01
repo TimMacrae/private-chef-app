@@ -36,12 +36,9 @@ export const useAddPreferenceItem = () => {
       const updatedArrayField = [...currentArrayField, ...filteredNewItems];
 
       originalData[field] = updatedArrayField;
-
-      // Send entire preferences with updated array via PUT
       return putUpdatePreferencesClientAction(originalData);
     },
 
-    // Optimistic update
     onMutate: async ({ field, item }) => {
       await queryClient.cancelQueries({
         queryKey: [apiConfig.QUERY_KEYS.PREFERENCES],
@@ -72,7 +69,6 @@ export const useAddPreferenceItem = () => {
         [field]: [...currentArray, ...filteredNewItems],
       };
 
-      // Update cache optimistically
       queryClient.setQueryData(
         [apiConfig.QUERY_KEYS.PREFERENCES],
         updatedPreferences
@@ -84,9 +80,8 @@ export const useAddPreferenceItem = () => {
       };
     },
 
-    onSuccess: (data, variables) => {
+    onSuccess: (data) => {
       queryClient.setQueryData([apiConfig.QUERY_KEYS.PREFERENCES], data);
-      toast.success(`Added "${variables.item}" successfully`);
     },
 
     onError: (error, variables, context) => {

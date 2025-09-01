@@ -1,6 +1,11 @@
 import { apiConfig } from "@/lib/api/api-config";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { Preferences, PreferenceSingleValueKeys } from "../preferences.type";
+import {
+  Preferences,
+  PreferenceSeasonalKey,
+  PreferenceSeasonalSubKey,
+  PreferenceSingleValueKeys,
+} from "../preferences.type";
 import { putUpdatePreferencesClientAction } from "@/app/actions/preferences-client.actions";
 import { toast } from "sonner";
 
@@ -13,8 +18,8 @@ export const useUpdatePreferences = () => {
       value,
       originalData,
     }: {
-      field: keyof PreferenceSingleValueKeys;
-      value: string | number | boolean;
+      field: keyof PreferenceSingleValueKeys | keyof PreferenceSeasonalKey;
+      value: string | number | boolean | PreferenceSeasonalSubKey;
       originalData: Preferences;
     }) => {
       if (!field) {
@@ -64,14 +69,8 @@ export const useUpdatePreferences = () => {
       };
     },
 
-    onSuccess: (data, variables) => {
+    onSuccess: (data) => {
       queryClient.setQueryData([apiConfig.QUERY_KEYS.PREFERENCES], data);
-
-      // Format the success message based on the field type
-      const fieldLabel = formatFieldLabel(variables.field);
-      const valueLabel = formatValueLabel(variables.field, variables.value);
-
-      toast.success(`Updated ${fieldLabel} to ${valueLabel}`);
     },
 
     onError: (error, variables, context) => {
@@ -98,7 +97,9 @@ export const useUpdatePreferences = () => {
 };
 
 // Helper functions for better UX messages
-const formatFieldLabel = (field: keyof PreferenceSingleValueKeys): string => {
+const formatFieldLabel = (
+  field: keyof PreferenceSingleValueKeys | keyof PreferenceSeasonalKey
+): string => {
   switch (field) {
     case "maxPrepTimeMinutes":
       return "maximum prep time";
@@ -108,25 +109,9 @@ const formatFieldLabel = (field: keyof PreferenceSingleValueKeys): string => {
       return "auto-adapt setting";
     case "cookingSkillLevel":
       return "cooking skill level";
+    case "seasonalPreferences":
+      return "seasonal preferences";
     default:
       return field;
-  }
-};
-
-const formatValueLabel = (
-  field: keyof PreferenceSingleValueKeys,
-  value: string | number | boolean
-): string => {
-  switch (field) {
-    case "maxPrepTimeMinutes":
-      return `${value} minutes`;
-    case "budgetLevel":
-      return value.toString().toLowerCase();
-    case "autoAdaptBasedOnFeedback":
-      return value ? "enabled" : "disabled";
-    case "cookingSkillLevel":
-      return value.toString().replace("_", " ").toLowerCase();
-    default:
-      return value.toString();
   }
 };

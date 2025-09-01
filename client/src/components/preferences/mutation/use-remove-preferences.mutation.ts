@@ -34,11 +34,7 @@ export const useRemovePreferenceItem = () => {
       );
 
       currentPreferences[field] = updatedArrayField;
-
-      // Send entire preferences with updated array via PUT
       return putUpdatePreferencesClientAction(currentPreferences);
-
-      // Send entire preferences with updated array via PUT
     },
 
     onMutate: async ({ field, item }) => {
@@ -68,10 +64,6 @@ export const useRemovePreferenceItem = () => {
       }
 
       return { previousPreferences };
-    },
-
-    onSuccess: (data, variables) => {
-      toast.success(`Removed "${variables.item}" successfully`);
     },
 
     onError: (error, variables, context) => {
