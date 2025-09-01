@@ -89,7 +89,9 @@ export interface PreferenceArrayKeys {
   likes: string[];
   dislikes: string[];
   preferredCuisines: string[];
+  excludedCuisines: string[];
   preferredChefStyles: string[];
+  excludedChefStyles: string[];
   kitchenEquipment: string[];
 }
 
@@ -99,4 +101,15 @@ export type PreferenceSingleValueKeys = {
   budgetLevel: string;
   autoAdaptBasedOnFeedback: boolean;
   cookingSkillLevel: string;
+};
+
+export type PreferenceSeasonalKey = {
+  seasonalPreferences: PreferenceSeasonalSubKey;
+};
+
+export type PreferenceSeasonalSubKey = {
+  spring: boolean;
+  summer: boolean;
+  autumn: boolean;
+  winter: boolean;
 };
