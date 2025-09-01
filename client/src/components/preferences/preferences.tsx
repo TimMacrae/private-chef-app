@@ -6,19 +6,14 @@ import { LayoutContentTitle } from "../layout/layout-content-title";
 import { PreferenceSection } from "./preference-section";
 import { PreferenceItemList } from "./preferences-inputs/preferences-item-list";
 import { PreferencesItemSelect } from "./preferences-inputs/preferences-item-select";
+import { PreferencesItemCheckbox } from "./preferences-inputs/preferences-item-checkbox";
+import { LoadingSpinner } from "../feedback/loading-spinner";
 
 export function Preferences() {
   const { data: preferences, isLoading, error } = usePreferences();
 
   if (isLoading) {
-    return (
-      <div
-        className="flex justify-center items-center p-8"
-        data-testid="loading-container"
-      >
-        <div className="text-lg">Loading your preferences...</div>
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (error) {
@@ -38,11 +33,10 @@ export function Preferences() {
 
       {preferences && (
         <div
-          className="grid gap-6 sm:grid-cols-2 md:grid-cols-3"
+          className="grid gap-6 sm:grid-cols-2 md:grid-cols-2 w-7xl"
           data-testid="preferences-section-container"
         >
           {/* Core Preferences */}
-
           <PreferenceSection
             dataTestId="preferences-section-core-preferences"
             title="Core Preferences"
@@ -54,30 +48,6 @@ export function Preferences() {
             <PreferenceItemList title="Allergies" preferenceKey="allergies" />
             <PreferenceItemList title="Likes" preferenceKey="likes" />
             <PreferenceItemList title="Dislikes" preferenceKey="dislikes" />
-          </PreferenceSection>
-
-          <PreferenceSection
-            dataTestId="preferences-section-culinary-preferences"
-            title="Culinary Preferences"
-          >
-            <PreferenceItemList
-              title="Preferred Cuisines"
-              preferenceKey="preferredCuisines"
-            />
-            <PreferenceItemList
-              title="Preferred Chef Styles"
-              preferenceKey="preferredChefStyles"
-            />
-            {/* Seasonal Preferences */}
-            <PreferenceSection
-              dataTestId="preferences-section-season"
-              title="Seasonal Preferences"
-            >
-              <PreferenceItemList
-                title="Spring"
-                preferenceKey="seasonalPreferences.spring"
-              />
-            </PreferenceSection>
           </PreferenceSection>
 
           {/* Meal Constraints */}
@@ -99,26 +69,55 @@ export function Preferences() {
             />
           </PreferenceSection>
 
-          {/* Kitchen Equipment */}
-          {/* <div className="bg-white p-6 rounded-lg shadow-sm border">
-            <h2 className="text-lg font-semibold mb-4">Kitchen Setup</h2>
-            <div className="space-y-3">
-              <div>
-                <span className="font-medium">Equipment:</span>
-                <p className="text-gray-600">
-                  {preferences.kitchenEquipment.join(", ") || "None specified"}
-                </p>
-              </div>
-              <div>
-                <span className="font-medium">Auto-adapt:</span>
-                <p className="text-gray-600">
-                  {preferences.autoAdaptBasedOnFeedback
-                    ? "Enabled"
-                    : "Disabled"}
-                </p>
-              </div>
-            </div>
-          </div> */}
+          {/* Culinary Preferences */}
+          <PreferenceSection
+            dataTestId="preferences-section-culinary-preferences"
+            title="Culinary Preferences"
+          >
+            <PreferenceItemList
+              title="Preferred Cuisines"
+              preferenceKey="preferredCuisines"
+            />
+            <PreferenceItemList
+              title="Exclude Cuisines"
+              preferenceKey="excludedCuisines"
+            />
+            <PreferenceItemList
+              title="Preferred Chef Styles"
+              preferenceKey="preferredChefStyles"
+            />
+            <PreferenceItemList
+              title="Excluded Chef Styles"
+              preferenceKey="excludedChefStyles"
+            />
+          </PreferenceSection>
+
+          {/* Seasonal Preferences */}
+          <PreferenceSection
+            dataTestId="preferences-section-seasonal-preferences"
+            title="Seasonal Preferences"
+          >
+            <PreferencesItemCheckbox
+              title="Spring"
+              preferenceKey="seasonalPreferences"
+              preferenceSubKey="spring"
+            />
+            <PreferencesItemCheckbox
+              title="Summer"
+              preferenceKey="seasonalPreferences"
+              preferenceSubKey="summer"
+            />
+            <PreferencesItemCheckbox
+              title="Autumn"
+              preferenceKey="seasonalPreferences"
+              preferenceSubKey="autumn"
+            />
+            <PreferencesItemCheckbox
+              title="Winter"
+              preferenceKey="seasonalPreferences"
+              preferenceSubKey="winter"
+            />
+          </PreferenceSection>
         </div>
       )}
     </>
