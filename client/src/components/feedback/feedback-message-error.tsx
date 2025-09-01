@@ -12,7 +12,7 @@ export const FeedbackMessageError = ({
   message,
 }: FeedbackMessageErrorProps) => {
   return (
-    <Alert variant="destructive">
+    <Alert variant="destructive" data-testid="feedback-message-error">
       <AlertCircleIcon />
       <AlertTitle>{title || "An error occurred"}</AlertTitle>
       <AlertDescription>
