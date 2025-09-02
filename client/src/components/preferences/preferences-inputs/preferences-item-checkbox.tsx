@@ -69,6 +69,7 @@ export function PreferencesItemCheckbox({
           data-testid="preferences-item-checkbox-button"
           checked={Boolean(currentValue)}
           onCheckedChange={handleCheckedChange}
+          disabled={updateMutation.isPending}
         />
         <label
           htmlFor={preferenceKey}
