@@ -1,5 +1,10 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  UseMutationResult,
+} from "@tanstack/react-query";
 import { render } from "@testing-library/react";
+import { MockedFunction, vi } from "vitest";
 
 export const createTestQueryClient = () =>
   new QueryClient({
@@ -58,6 +63,81 @@ export const createMockQueryResult = (mockRefetch: any, overrides: any) => ({
   failureCount: 0,
   failureReason: null,
   dataUpdatedAt: 0,
-  // Override with provided values
   ...overrides,
 });
+
+export function createMockMutationResult<
+  TData,
+  TError = Error,
+  TVariables = unknown,
+  TContext = unknown
+>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockMutateAsync: (...args: any[]) => Promise<any>,
+  overrides: Partial<
+    UseMutationResult<TData, TError, TVariables, TContext>
+  > = {}
+): UseMutationResult<TData, TError, TVariables, TContext> {
+  return {
+    mutateAsync: mockMutateAsync as UseMutationResult<
+      TData,
+      TError,
+      TVariables,
+      TContext
+    >["mutateAsync"],
+    mutate: vi.fn() as UseMutationResult<
+      TData,
+      TError,
+      TVariables,
+      TContext
+    >["mutate"],
+    reset: vi.fn(),
+    status: "idle",
+    isIdle: true,
+    isPending: false,
+    // @ts-expect-error isLoading error
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    isPaused: false,
+    error: null as unknown as TError,
+    data: undefined as unknown as TData, // <- typed but unset by default
+    failureCount: 0,
+    failureReason: null as unknown as TError,
+    variables: undefined as unknown as TVariables,
+    context: undefined as unknown as TContext,
+    submittedAt: 0,
+    ...overrides,
+  };
+}
+
+export const createMockMutationPending = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockMutateAsync: MockedFunction<any>
+) =>
+  createMockMutationResult(mockMutateAsync, {
+    isPending: true,
+    status: "pending",
+  });
+
+export const createMockMutationError = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockMutateAsync: MockedFunction<any>,
+  error: Error = new Error("Mutation failed")
+) =>
+  createMockMutationResult(mockMutateAsync, {
+    isError: true,
+    error,
+    status: "error",
+  });
+
+export const createMockMutationSuccess = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mockMutateAsync: MockedFunction<any>,
+  data: unknown = { success: true }
+) =>
+  createMockMutationResult(mockMutateAsync, {
+    isSuccess: true,
+    data,
+    status: "success",
+  });
