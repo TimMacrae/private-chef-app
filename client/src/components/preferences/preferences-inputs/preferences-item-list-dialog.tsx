@@ -69,6 +69,7 @@ export function PreferencesItemListDialog({
           size="sm"
           className="hover:none text-sidebar-foreground cursor-pointer gap-0 ml-1"
           disabled={addItemMutation.isPending}
+          data-testid={`preference-item-list-dialog-${preferenceKey}-trigger`}
         >
           <PlusIcon className="h-4 w-4" />
         </Button>
@@ -87,6 +88,7 @@ export function PreferencesItemListDialog({
               <Label>Item</Label>
               <Input
                 id="item-input"
+                data-testid={`preference-item-list-dialog-${preferenceKey}-input`}
                 name="item"
                 placeholder={`Enter ${title.toLowerCase().slice(0, -1)}`}
                 value={newItem}
