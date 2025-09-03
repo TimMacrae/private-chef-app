@@ -67,7 +67,7 @@ export function PreferencesItemSelect({
       >
         <SelectTrigger
           className="w-[200px]"
-          data-testid="preferences-item-select-button"
+          data-testid={`preferences-item-select-button-${preferenceKey}`}
         >
           <SelectValue
             data-testid="preferences-item-select-value"

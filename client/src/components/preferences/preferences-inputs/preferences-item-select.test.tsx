@@ -48,7 +48,7 @@ describe("PreferencesItemSelect", () => {
 
     expect(screen.getByText("Max Prep Time")).toBeInTheDocument();
     expect(
-      screen.getByTestId("preferences-item-select-button")
+      screen.getByTestId("preferences-item-select-button-maxPrepTimeMinutes")
     ).toBeInTheDocument();
     expect(
       screen.getByTestId("preferences-item-select-value")
@@ -99,7 +99,9 @@ describe("PreferencesItemSelect", () => {
       </QueryClientProvider>
     );
 
-    const selectButton = screen.getByTestId("preferences-item-select-button");
+    const selectButton = screen.getByTestId(
+      "preferences-item-select-button-maxPrepTimeMinutes"
+    );
     fireEvent.click(selectButton);
 
     await waitFor(() => {
