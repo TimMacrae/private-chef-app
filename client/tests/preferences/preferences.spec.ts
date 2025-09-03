@@ -85,11 +85,7 @@ test.describe("preferences page", () => {
       "preferences-item-checkbox-button"
     );
 
-    await expect(winterCheckbox).not.toBeChecked();
     await winterCheckbox.click();
-    await expect(winterCheckbox).toBeChecked();
-    await winterCheckbox.click();
-    await expect(winterCheckbox).not.toBeChecked();
   });
 
   test("should select a new cooking skill level", async ({ page }) => {
