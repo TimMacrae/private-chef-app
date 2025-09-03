@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.privatechef.auth.AuthService;
 import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.PreferencesModelNotFound;
-import com.privatechef.preferences.dto.PreferencesDto;
 import com.privatechef.preferences.model.BudgetLevel;
 import com.privatechef.preferences.model.CookingSkillLevel;
+import com.privatechef.preferences.model.PreferencesModel;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +67,10 @@ class PreferencesControllerTest {
         String id = "id12";
         String userId = "user-123";
 
-        PreferencesDto preferences = new PreferencesDto();
+        PreferencesModel preferences = new PreferencesModel();
         preferences.setId(id);
         preferences.setUserId(userId);
-        
+
         Mockito.when(authService.getCurrentUserId(any())).thenReturn(userId);
         Mockito.when(preferencesService.getUserPreferences(userId)).thenReturn(preferences);
 
@@ -91,7 +91,7 @@ class PreferencesControllerTest {
         int maxPrepTimeMinutes = 60;
         CookingSkillLevel cookingSkillLevel = CookingSkillLevel.values()[0];
 
-        PreferencesDto request = new PreferencesDto();
+        PreferencesModel request = new PreferencesModel();
         request.setId(id);
         request.setLikes(likes);
         request.setUserId(userId);
@@ -100,7 +100,7 @@ class PreferencesControllerTest {
         request.setCookingSkillLevel(cookingSkillLevel);
         request.setLikes(likes);
 
-        PreferencesDto updated = new PreferencesDto();
+        PreferencesModel updated = new PreferencesModel();
         updated.setId(id);
         updated.setLikes(likes);
         updated.setUserId(userId);
@@ -134,13 +134,13 @@ class PreferencesControllerTest {
         List<String> likes = new ArrayList<>(List.of("Pizza"));
 
 
-        PreferencesDto request = new PreferencesDto();
+        PreferencesModel request = new PreferencesModel();
         request.setId(id);
         request.setLikes(likes);
         request.setUserId(userId);
 
         Mockito.when(authService.getCurrentUserId(any())).thenReturn(userId);
-        when(preferencesService.updateUserPreferences(eq(userId), any(PreferencesDto.class)))
+        when(preferencesService.updateUserPreferences(eq(userId), any(PreferencesModel.class)))
                 .thenThrow(new PreferencesModelNotFound(userId));
 
         mockMvc.perform(put(EndpointsConfig.PREFERENCES)

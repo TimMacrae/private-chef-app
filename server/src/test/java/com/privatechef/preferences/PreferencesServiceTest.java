@@ -1,8 +1,6 @@
 package com.privatechef.preferences;
 
 import com.privatechef.exception.PreferencesModelNotFound;
-import com.privatechef.preferences.dto.PreferencesDto;
-import com.privatechef.preferences.mapper.PreferencesMapper;
 import com.privatechef.preferences.model.BudgetLevel;
 import com.privatechef.preferences.model.CookingSkillLevel;
 import com.privatechef.preferences.model.PreferencesModel;
@@ -33,8 +31,7 @@ class PreferencesServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        PreferencesMapper preferencesMapper = new PreferencesMapper(); // Real mapper
-        preferencesService = new PreferencesService(preferencesRepository, preferencesMapper);
+        preferencesService = new PreferencesService(preferencesRepository);
     }
 
     @Test
@@ -45,7 +42,7 @@ class PreferencesServiceTest {
         when(preferencesRepository.findByUserId(userId)).thenReturn(Optional.empty());
         when(preferencesRepository.save(any(PreferencesModel.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        PreferencesDto result = preferencesService.getUserPreferences(userId);
+        PreferencesModel result = preferencesService.getUserPreferences(userId);
 
         assertNotNull(result);
         assertEquals(userId, result.getUserId());
@@ -65,7 +62,7 @@ class PreferencesServiceTest {
 
         when(preferencesRepository.findByUserId(userId)).thenReturn(Optional.of(existing));
 
-        PreferencesDto result = preferencesService.getUserPreferences(userId);
+        PreferencesModel result = preferencesService.getUserPreferences(userId);
 
         assertNotNull(result);
         assertEquals(BudgetLevel.HIGH, result.getBudgetLevel());
@@ -84,7 +81,7 @@ class PreferencesServiceTest {
                 .createdAt(LocalDateTime.of(2023, 1, 1, 12, 0))
                 .build();
 
-        PreferencesDto updateDto = new PreferencesDto();
+        PreferencesModel updateDto = new PreferencesModel();
         updateDto.setUserId(userId);
         updateDto.setBudgetLevel(BudgetLevel.HIGH);
         updateDto.setCookingSkillLevel(CookingSkillLevel.ADVANCED);
@@ -93,7 +90,7 @@ class PreferencesServiceTest {
         when(preferencesRepository.findByUserId(userId)).thenReturn(Optional.of(existing));
         when(preferencesRepository.save(any(PreferencesModel.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        PreferencesDto updated = preferencesService.updateUserPreferences(userId, updateDto);
+        PreferencesModel updated = preferencesService.updateUserPreferences(userId, updateDto);
 
         assertEquals(BudgetLevel.HIGH, updated.getBudgetLevel());
         assertEquals(CookingSkillLevel.ADVANCED, updated.getCookingSkillLevel());
@@ -110,7 +107,7 @@ class PreferencesServiceTest {
     @Test
     void updateUserPreferences_WhenNotFound_ShouldThrow() {
         String userId = "unknownUser";
-        PreferencesDto updateDto = new PreferencesDto();
+        PreferencesModel updateDto = new PreferencesModel();
         updateDto.setUserId(userId);
 
         when(preferencesRepository.findByUserId(userId)).thenReturn(Optional.empty());
