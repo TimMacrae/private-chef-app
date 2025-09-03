@@ -11,15 +11,22 @@ import {
   SidebarHeader,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { apiConfig } from "@/lib/api/apiConfig";
+import { apiConfig } from "@/lib/api/api-config";
 import {
   sidebarMenu,
   sidebarMenuCommunity,
   sidebarMenuSettings,
-} from "./sidebarMenu.config";
+} from "./sidebar-menu.config";
 import { LogOut } from "lucide-react";
 
+import { NavigationItem } from "./navigation-item";
+
 export function NavigationSidebar() {
+  const itemColor =
+    "hover:text-white hover:!bg-primary/80 transition-colors duration-200 ease-in-out";
+  const activeColor =
+    "bg-primary text-white hover:bg-primary hover:text-white transition-colors duration-200 ease-in-out";
+
   return (
     <Sidebar collapsible="icon" data-testid="sidebar">
       <SidebarHeader>
@@ -32,12 +39,14 @@ export function NavigationSidebar() {
             <SidebarMenu>
               {sidebarMenu.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild data-testid={item.dataTestId}>
-                    <a href={item.url}>
-                      {item.icon ? <item.icon /> : null}
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <NavigationItem
+                    url={item.url}
+                    title={item.title}
+                    icon={item.icon ? <item.icon /> : undefined}
+                    dataTestId={item.dataTestId}
+                    itemColor={itemColor}
+                    activeColor={activeColor}
+                  />
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -50,12 +59,14 @@ export function NavigationSidebar() {
             <SidebarMenu>
               {sidebarMenuCommunity.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild data-testid={item.dataTestId}>
-                    <a href={item.url}>
-                      {item.icon ? <item.icon /> : null}
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <NavigationItem
+                    url={item.url}
+                    title={item.title}
+                    icon={item.icon ? <item.icon /> : undefined}
+                    dataTestId={item.dataTestId}
+                    itemColor={itemColor}
+                    activeColor={activeColor}
+                  />
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -68,12 +79,14 @@ export function NavigationSidebar() {
             <SidebarMenu>
               {sidebarMenuSettings.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild data-testid={item.dataTestId}>
-                    <a href={item.url}>
-                      {item.icon ? <item.icon /> : null}
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
+                  <NavigationItem
+                    url={item.url}
+                    title={item.title}
+                    icon={item.icon ? <item.icon /> : undefined}
+                    dataTestId={item.dataTestId}
+                    itemColor={itemColor}
+                    activeColor={activeColor}
+                  />
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -83,7 +96,7 @@ export function NavigationSidebar() {
       <SidebarFooter>
         <SidebarMenuButton
           asChild
-          className="bg-secondary"
+          className="bg-primary text-white hover:text-white hover:bg-primary/80"
           data-testid="auth-logout"
         >
           <a href={apiConfig.URL.AUTH_LOGOUT}>

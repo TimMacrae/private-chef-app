@@ -1,20 +1,20 @@
 package com.privatechef.auth;
 
-import com.privatechef.config.EndpointsConfig;
-import com.privatechef.utils.mocks.MockJwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.privatechef.config.EndpointsConfig;
+import com.privatechef.utils.mocks.MockJwtUtils;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -71,7 +71,7 @@ public class AuthControllerTest {
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("""
                         {
-                            "error": "You have not the right privileges"
+                            "message": "You have not the right privileges"
                         }
                         """));
     }

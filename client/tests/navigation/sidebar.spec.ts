@@ -1,4 +1,4 @@
-import { sidebarMenu } from "@/components/navigation/sidebarMenu.config";
+import { sidebarMenu } from "@/components/navigation/sidebar-menu.config";
 import test, { expect } from "@playwright/test";
 
 test.describe("navigation", () => {

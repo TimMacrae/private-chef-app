@@ -13,4 +13,7 @@ public final class EndpointsConfig {
 
     public static final String AUTH_ME_FULL = AUTH + AUTH_ME;
     public static final String AUTH_ADMIN_FULL = AUTH + AUTH_ADMIN;
+
+    // PREFERENCES
+    public static final String PREFERENCES = API_BASE + "/preferences";
 }

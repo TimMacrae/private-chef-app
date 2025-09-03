@@ -1,13 +1,13 @@
 import React from "react";
 import { beforeAll, describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { NavigationSidebar } from "@/components/navigation/NavigationSidebar";
+import { NavigationSidebar } from "@/components/navigation/navigation-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   sidebarMenu,
   sidebarMenuCommunity,
   sidebarMenuSettings,
-} from "../sidebarMenu.config";
+} from "../sidebar-menu.config";
 
 // Mock window.matchMedia
 beforeAll(() => {

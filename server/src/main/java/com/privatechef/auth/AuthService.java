@@ -1,11 +1,11 @@
 package com.privatechef.auth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthService {
@@ -33,5 +33,10 @@ public class AuthService {
             currentAdminUser.put("roles", jwt.getClaim(ROLES_NAMESPACE));
         }
         return currentAdminUser;
+    }
+
+    public String getCurrentUserId(Jwt jwt) {
+        if (jwt.getClaim("sub") == null) throw new IllegalArgumentException("No user id found in jwt");
+        return jwt.getClaim("sub");
     }
 }

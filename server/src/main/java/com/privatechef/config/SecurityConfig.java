@@ -33,7 +33,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/admin/**").hasRole("ADMIN")
+                .requestMatchers(EndpointsConfig.AUTH_ADMIN_FULL + "/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
         http.oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
@@ -45,7 +45,7 @@ public class SecurityConfig {
                 response.setContentType("application/json");
                 response.getWriter().write("""
                             {
-                              "error": "You have not the right privileges"
+                              "message": "You have not the right privileges"
                             }
                         """);
             });

@@ -5,11 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class AuthServiceTest {
 
@@ -56,4 +60,20 @@ public class AuthServiceTest {
         assertEquals("auth0|test-user", user.get("id"));
         assertFalse(user.containsKey("roles"));
     }
+
+    @Test
+    void getCurrentUserId_shouldReturnCurrentUserId() {
+        var jwt = MockJwtUtils.createUserToken().getToken();
+        String userId = authService.getCurrentUserId(jwt);
+        assertNotNull(userId);
+        assertEquals("auth0|test-user", userId);
+    }
+
+    @Test
+    void getCurrentUserId_shouldThrowAnException() {
+        Jwt jwt = mock(Jwt.class);
+        when(jwt.getClaim("sub")).thenReturn(null);
+        assertThrows(IllegalArgumentException.class, () -> authService.getCurrentUserId(jwt));
+    }
+
 }
