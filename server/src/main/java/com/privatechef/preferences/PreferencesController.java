@@ -5,7 +5,7 @@ import com.privatechef.auth.AuthService;
 import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.ExceptionMessage;
 import com.privatechef.exception.PreferencesModelNotFound;
-import com.privatechef.preferences.dto.PreferencesDto;
+import com.privatechef.preferences.model.PreferencesModel;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,14 +23,14 @@ public class PreferencesController {
     private final AuthService authService;
 
     @GetMapping
-    public ResponseEntity<PreferencesDto> getUserPreferences(@AuthenticationPrincipal Jwt jwt) {
-        PreferencesDto userPreferences = preferencesService.getUserPreferences(authService.getCurrentUserId(jwt));
+    public ResponseEntity<PreferencesModel> getUserPreferences(@AuthenticationPrincipal Jwt jwt) {
+        PreferencesModel userPreferences = preferencesService.getUserPreferences(authService.getCurrentUserId(jwt));
         return ResponseEntity.ok(userPreferences);
     }
 
     @PutMapping
-    public ResponseEntity<PreferencesDto> updateUserPreferences(@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody PreferencesDto userPreferences) {
-        PreferencesDto updatedUserPreferences = preferencesService.updateUserPreferences(authService.getCurrentUserId(jwt), userPreferences);
+    public ResponseEntity<PreferencesModel> updateUserPreferences(@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody PreferencesModel userPreferences) {
+        PreferencesModel updatedUserPreferences = preferencesService.updateUserPreferences(authService.getCurrentUserId(jwt), userPreferences);
         return ResponseEntity.ok(updatedUserPreferences);
     }
 
