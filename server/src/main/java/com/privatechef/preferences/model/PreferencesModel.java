@@ -71,4 +71,30 @@ public class PreferencesModel {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;
+
+    public void updatePreferencesModel(PreferencesModel source) {
+
+        this.setUserId(source.getUserId());
+        this.setDietaryRestrictions(source.getDietaryRestrictions());
+        this.setAllergies(source.getAllergies());
+        this.setDislikes(source.getDislikes());
+        this.setLikes(source.getLikes());
+
+        this.setPreferredCuisines(source.getPreferredCuisines());
+        this.setExcludedCuisines(source.getExcludedCuisines());
+        this.setPreferredChefStyles(source.getPreferredChefStyles());
+        this.setExcludedChefStyles(source.getExcludedChefStyles());
+
+        this.setSeasonalPreferences(source.getSeasonalPreferences());
+
+        this.setMaxPrepTimeMinutes(source.getMaxPrepTimeMinutes());
+        this.setBudgetLevel(source.getBudgetLevel());
+
+        this.setAutoAdaptBasedOnFeedback(source.isAutoAdaptBasedOnFeedback());
+        this.setCookingSkillLevel(source.getCookingSkillLevel());
+        this.setKitchenEquipment(source.getKitchenEquipment());
+        this.setNutritionalGoals(source.getNutritionalGoals());
+
+        this.setUpdatedAt(LocalDateTime.now());
+    }
 }
