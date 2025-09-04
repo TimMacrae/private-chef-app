@@ -1,10 +1,18 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
-  ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`
-  : "http://localhost:8080/api";
+const isBrowser = typeof window !== "undefined";
+
+const baseUrl = isBrowser
+  ? process.env.NEXT_PUBLIC_API_URL
+  : process.env.API_BASE_URL ?? process.env.NEXT_PUBLIC_API_URL;
+
+if (!baseUrl) {
+  throw new Error(
+    "Missing API base URL. Set NEXT_PUBLIC_API_URL (for client) and API_BASE_URL (for server)."
+  );
+}
 
 export const apiConfig = {
   URL: {
-    BASE_URL: `${BASE_URL}/api` || "http://localhost:8080/api",
+    BASE_URL: baseUrl,
     HOME: "/",
     AUTH_LOGIN: "/auth/login",
     AUTH_LOGOUT: "/auth/logout",
@@ -13,7 +21,7 @@ export const apiConfig = {
     PREFERENCES: "/preferences",
   },
   API: {
-    PREFERENCES: `${BASE_URL}/preferences`,
+    PREFERENCES: `${baseUrl}/preferences`,
   },
   ENDPOINTS: {
     USER: "/user",
