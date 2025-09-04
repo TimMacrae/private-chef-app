@@ -1,6 +1,5 @@
 package com.privatechef.config;
 
-import com.privatechef.utils.mocks.MockJwtUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +8,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.privatechef.utils.mocks.MockJwtUtils;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class SecurityConfigIntegrationTest {
+
 
     SecurityContext context = SecurityContextHolder.createEmptyContext();
 
@@ -66,7 +67,7 @@ public class SecurityConfigIntegrationTest {
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("""
                         {
-                            "error": "You have not the right privileges"
+                            "message": "You have not the right privileges"
                         }
                         """));
     }

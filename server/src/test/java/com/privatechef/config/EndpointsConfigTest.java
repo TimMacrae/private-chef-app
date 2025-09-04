@@ -35,4 +35,9 @@ class EndpointsConfigTest {
     void endpointsConfig_authAdminFullShouldBeApiAuthAdmin() {
         assertEquals("/api/auth/admin", EndpointsConfig.AUTH_ADMIN_FULL);
     }
+
+    @Test
+    void endpointsConfig_preferences() {
+        assertEquals("/api/preferences", EndpointsConfig.PREFERENCES);
+    }
 }

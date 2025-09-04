@@ -1,3 +1,4 @@
+import { apiConfig } from "@/lib/api/api-config";
 import {
   Calendar,
   Home,
@@ -14,7 +15,7 @@ import {
 export type SidebarMenuItem = {
   title: string;
   url: string; // Route path
-  icon?: React.ElementType; // Optional: for icon components
+  icon: React.ElementType; // Optional: for icon components
   children?: SidebarMenuItem[]; // Optional: for nested menus
   disabled?: boolean; // Optional: for disabled state
   dataTestId: string; // Optional: for testing purposes
@@ -66,7 +67,7 @@ export const sidebarMenuCommunity: SidebarMenuItem[] = [
 export const sidebarMenuSettings: SidebarMenuItem[] = [
   {
     title: "Preferences",
-    url: "#",
+    url: apiConfig.URL.PREFERENCES,
     icon: BookHeart,
     dataTestId: "sidebar-item-preferences",
   },

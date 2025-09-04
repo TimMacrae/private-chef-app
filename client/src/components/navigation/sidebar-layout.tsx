@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
-import { NavigationSidebar } from "./NavigationSidebar";
+import { NavigationSidebar } from "./navigation-sidebar";
 
 export async function SidebarLayout({
   children,

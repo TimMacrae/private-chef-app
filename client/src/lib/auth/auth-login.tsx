@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import TestImage from "../../../public/BCD490FE-35D8-4D99-AD26-C3699FBF2840.jpeg";
-import { apiConfig } from "../api/apiConfig";
+import { apiConfig } from "../api/api-config";
 
 export async function AuthLogin() {
   return (
