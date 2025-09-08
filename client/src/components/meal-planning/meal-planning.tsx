@@ -16,6 +16,8 @@ import { useUpdateMealPlanning } from "./mutation/use-update-meal-planning.mutat
 import { LoadingSpinner } from "../feedback/loading-spinner";
 import { MealPlanning as MealPlanningType } from "./meal-planning.type";
 import { FeedbackMessageError } from "../feedback/feedback-message-error";
+import { Label } from "../ui/label";
+import { Switch } from "../ui/switch";
 
 const weekDays = [
   "monday",
@@ -48,6 +50,17 @@ export function MealPlanning() {
     updateMealPlan(updatedPlan);
   };
 
+  const handleToggleActive = (isActive: boolean) => {
+    if (!mealPlan) return;
+
+    const updatedPlan = {
+      ...mealPlan,
+      active: isActive,
+    };
+
+    updateMealPlan(updatedPlan);
+  };
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -67,52 +80,71 @@ export function MealPlanning() {
     <div>
       <LayoutContentTitle title="Meal Planning" />
       {mealPlan && (
-        <div className="border rounded-lg">
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="w-[120px]">Day</TableHead>
-                {mealTimes.map((mealTime) => (
-                  <TableHead key={mealTime} className="capitalize text-center">
-                    {mealTime}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {weekDays.map((day) => (
-                <TableRow key={day} className="hover:bg-transparent">
-                  <TableCell className="font-medium capitalize">
-                    {day}
-                  </TableCell>
-                  {mealTimes.map((mealTime) => {
-                    const isChecked =
-                      mealPlan[day as keyof typeof mealPlan]?.[
-                        mealTime as keyof (typeof mealPlan)[keyof typeof mealPlan]
-                      ];
-                    return (
-                      <TableCell
-                        key={`${day}-${mealTime}`}
-                        className="text-center"
-                      >
-                        <Button
-                          variant="ghost"
-                          className="w-full h-full hover:bg-transparent hover:cursor-pointer"
-                          onClick={() => handleCellClick(day, mealTime)}
-                        >
-                          <Check
-                            className={`mx-auto h-4 w-4 text-primary transition-opacity ${
-                              isChecked ? "opacity-100" : "opacity-0"
-                            }`}
-                          />
-                        </Button>
-                      </TableCell>
-                    );
-                  })}
+        <div>
+          <div
+            className={`border rounded-lg transition-opacity ${
+              !mealPlan.active ? "opacity-50 pointer-events-none" : ""
+            }`}
+          >
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-[120px]">Day</TableHead>
+                  {mealTimes.map((mealTime) => (
+                    <TableHead
+                      key={mealTime}
+                      className="capitalize text-center"
+                    >
+                      {mealTime}
+                    </TableHead>
+                  ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {weekDays.map((day) => (
+                  <TableRow key={day} className="hover:bg-transparent">
+                    <TableCell className="font-medium capitalize">
+                      {day}
+                    </TableCell>
+                    {mealTimes.map((mealTime) => {
+                      const isChecked =
+                        mealPlan[day as keyof typeof mealPlan]?.[
+                          mealTime as keyof (typeof mealPlan)[keyof typeof mealPlan]
+                        ];
+                      return (
+                        <TableCell
+                          key={`${day}-${mealTime}`}
+                          className="text-center"
+                        >
+                          <Button
+                            variant="ghost"
+                            className="w-full h-full hover:bg-transparent hover:cursor-pointer"
+                            onClick={() => handleCellClick(day, mealTime)}
+                          >
+                            <Check
+                              className={`mx-auto h-4 w-4 text-primary transition-opacity ${
+                                isChecked ? "opacity-100" : "opacity-0"
+                              }`}
+                            />
+                          </Button>
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <div className="flex items-center space-x-2 justify-end mt-4">
+            <Label htmlFor="toggle-meal-planning">
+              {mealPlan.active ? "Deactivate" : "Activate"}
+            </Label>
+            <Switch
+              id="toggle-meal-planning"
+              checked={mealPlan.active}
+              onCheckedChange={handleToggleActive}
+            />
+          </div>
         </div>
       )}
     </div>

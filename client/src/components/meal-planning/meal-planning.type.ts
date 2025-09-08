@@ -9,6 +9,7 @@ const MealPlanningDaySchema = z.object({
 export const MealPlanningSchema = z.object({
   id: z.string(),
   userId: z.string(),
+  active: z.boolean(),
   monday: MealPlanningDaySchema,
   tuesday: MealPlanningDaySchema,
   wednesday: MealPlanningDaySchema,
