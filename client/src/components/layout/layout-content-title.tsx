@@ -6,7 +6,7 @@ interface LayoutContentTitleProps {
 
 export const LayoutContentTitle = ({ title }: LayoutContentTitleProps) => {
   return (
-    <h1 className="text-2xl font-bold" data-testid="layout-content-title">
+    <h1 className="text-2xl font-bold mb-12" data-testid="layout-content-title">
       {title}
     </h1>
   );
