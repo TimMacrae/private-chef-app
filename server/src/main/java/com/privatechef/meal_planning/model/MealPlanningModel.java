@@ -16,12 +16,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "meal_planing")
+@Document(collection = "meal_planning")
 public class MealPlanningModel {
     @Id
     private String id;
 
-    @Value("userId")
     @Indexed(unique = true)
     private String userId;
 
