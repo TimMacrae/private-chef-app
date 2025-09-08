@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,6 +24,9 @@ public class MealPlanningModel {
     private String userId;
 
     @Builder.Default
+    private boolean active = false;
+
+    @Builder.Default
     private MealPlanningDayModel monday = new MealPlanningDayModel();
     @Builder.Default
     private MealPlanningDayModel tuesday = new MealPlanningDayModel();
@@ -43,6 +45,7 @@ public class MealPlanningModel {
     private LocalDateTime updatedAt;
 
     public void updateMealPlaningModel(MealPlanningModel mealPlanningModel) {
+        this.active = mealPlanningModel.active;
         this.monday = mealPlanningModel.monday;
         this.tuesday = mealPlanningModel.tuesday;
         this.wednesday = mealPlanningModel.wednesday;

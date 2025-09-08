@@ -16,6 +16,7 @@ class MealPlanningModelTest {
 
         assertEquals("1", model.getId());
         assertEquals("user123", model.getUserId());
+        assertFalse(model.isActive());
         assertNotNull(model.getMonday());
         assertNotNull(model.getTuesday());
         assertNotNull(model.getWednesday());
@@ -35,6 +36,7 @@ class MealPlanningModelTest {
 
         MealPlanningDayModel newMonday = new MealPlanningDayModel();
         MealPlanningModel update = MealPlanningModel.builder()
+                .active(true)
                 .monday(newMonday)
                 .tuesday(new MealPlanningDayModel())
                 .wednesday(new MealPlanningDayModel())
@@ -48,13 +50,14 @@ class MealPlanningModelTest {
 
         assertEquals(newMonday, original.getMonday());
         assertNotNull(original.getUpdatedAt());
+        assertTrue(original.isActive());
     }
 
     @Test
     void mealPlanningModel_testAllArgsConstructor() {
         LocalDateTime now = LocalDateTime.now();
         MealPlanningModel model = new MealPlanningModel(
-                "id1", "user1",
+                "id1", "user1", true,
                 new MealPlanningDayModel(), new MealPlanningDayModel(), new MealPlanningDayModel(),
                 new MealPlanningDayModel(), new MealPlanningDayModel(), new MealPlanningDayModel(),
                 new MealPlanningDayModel(), now, now
