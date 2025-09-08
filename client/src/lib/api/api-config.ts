@@ -11,9 +11,11 @@ export const apiConfig = {
     AUTH_REGISTER: "/auth/login?screen_hint=signup",
     AUTH_ERROR: "/auth/error",
     PREFERENCES: "/preferences",
+    MEAL_PLANNING: "/meal-planning",
   },
   API: {
     PREFERENCES: `${BASE_URL}/preferences`,
+    MEAL_PLANNING: `${BASE_URL}/meal-planning`,
   },
   ENDPOINTS: {
     USER: "/user",
@@ -23,5 +25,6 @@ export const apiConfig = {
     USER: "USER",
     USER_PROFILE: "USER_PROFILE",
     PREFERENCES: "PREFERENCES",
+    MEAL_PLANNING: "MEAL_PLANNING",
   },
 };
