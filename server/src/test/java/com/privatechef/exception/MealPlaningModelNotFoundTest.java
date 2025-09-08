@@ -9,9 +9,9 @@ class MealPlaningModelNotFoundTest {
     void mealPlaningModelNotFound_shouldContainCorrectMessage() {
         String id = "123";
         assertThrows(
-                MealPlaningModelNotFound.class,
+                MealPlanningModelNotFound.class,
                 () -> {
-                    throw new MealPlaningModelNotFound(id);
+                    throw new MealPlanningModelNotFound(id);
                 }
         );
     }

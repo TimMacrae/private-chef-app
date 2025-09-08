@@ -1,12 +1,12 @@
-package com.privatechef.meal_planing.repository;
+package com.privatechef.meal_planning.repository;
 
-import com.privatechef.meal_planing.model.MealPlanningModel;
+import com.privatechef.meal_planning.model.MealPlanningModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface MealPlaningRepository extends MongoRepository<MealPlanningModel, String> {
+public interface MealPlanningRepository extends MongoRepository<MealPlanningModel, String> {
     Optional<MealPlanningModel> findByUserId(String userId);
 }

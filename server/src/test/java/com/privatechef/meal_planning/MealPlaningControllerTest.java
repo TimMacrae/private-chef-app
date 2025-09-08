@@ -1,11 +1,11 @@
-package com.privatechef.meal_planing;
+package com.privatechef.meal_planning;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.privatechef.auth.AuthService;
 import com.privatechef.config.EndpointsConfig;
-import com.privatechef.exception.MealPlaningModelNotFound;
-import com.privatechef.meal_planing.model.MealPlaningDayModel;
-import com.privatechef.meal_planing.model.MealPlanningModel;
+import com.privatechef.exception.MealPlanningModelNotFound;
+import com.privatechef.meal_planning.model.MealPlanningDayModel;
+import com.privatechef.meal_planning.model.MealPlanningModel;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ class MealPlaningControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MealPlaningService mealPlaningService;
+    private MealPlanningService mealPlaningService;
 
     @Autowired
     private AuthService authService;
@@ -49,8 +49,8 @@ class MealPlaningControllerTest {
     @TestConfiguration
     static class MockConfig {
         @Bean
-        public MealPlaningService mealPlaningService() {
-            return Mockito.mock(MealPlaningService.class);
+        public MealPlanningService mealPlaningService() {
+            return Mockito.mock(MealPlanningService.class);
         }
 
         @Bean
@@ -60,7 +60,7 @@ class MealPlaningControllerTest {
     }
 
     @Test
-    void getMealPlaning_shouldReturnMealPlaning() throws Exception {
+    void getMealPlanning_shouldReturnMealPlaning() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String id = "meal-id-1";
         String userId = "user-123";
@@ -73,7 +73,7 @@ class MealPlaningControllerTest {
         when(authService.getCurrentUserId(any())).thenReturn(userId);
         when(mealPlaningService.getMealPlaning(userId)).thenReturn(mealPlanning);
 
-        mockMvc.perform(get(EndpointsConfig.MEAL_PLANING)
+        mockMvc.perform(get(EndpointsConfig.MEAL_PLANNING)
                         .with(jwt().jwt(jwt)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
@@ -81,11 +81,11 @@ class MealPlaningControllerTest {
     }
 
     @Test
-    void updateMealPlaning_shouldUpdateMealPlaning() throws Exception {
+    void updateMealPlanning_shouldUpdateMealPlaning() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String id = "meal-id-1";
         String userId = "user-123";
-        MealPlaningDayModel updateMonday = new MealPlaningDayModel(true, true, true);
+        MealPlanningDayModel updateMonday = new MealPlanningDayModel(true, true, true);
 
         MealPlanningModel request = MealPlanningModel.builder()
                 .id(id)
@@ -102,7 +102,7 @@ class MealPlaningControllerTest {
         when(authService.getCurrentUserId(any())).thenReturn(userId);
         when(mealPlaningService.updateMealPlaning(eq(userId), any(MealPlanningModel.class))).thenReturn(updated);
 
-        mockMvc.perform(put(EndpointsConfig.MEAL_PLANING)
+        mockMvc.perform(put(EndpointsConfig.MEAL_PLANNING)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -113,7 +113,7 @@ class MealPlaningControllerTest {
     }
 
     @Test
-    void updateMealPlaning_shouldThrowAnError() throws Exception {
+    void updateMealPlanning_shouldThrowAnError() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String id = "unknown";
         String userId = "unknownUser";
@@ -122,18 +122,18 @@ class MealPlaningControllerTest {
         MealPlanningModel request = MealPlanningModel.builder()
                 .id(id)
                 .userId(userId)
-                .monday(new MealPlaningDayModel(true, false, true))
+                .monday(new MealPlanningDayModel(true, false, true))
                 .build();
 
         when(authService.getCurrentUserId(any())).thenReturn(userId);
         when(mealPlaningService.updateMealPlaning(eq(userId), any(MealPlanningModel.class)))
-                .thenThrow(new MealPlaningModelNotFound(userId));
+                .thenThrow(new MealPlanningModelNotFound(userId));
 
-        mockMvc.perform(put(EndpointsConfig.MEAL_PLANING)
+        mockMvc.perform(put(EndpointsConfig.MEAL_PLANNING)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value(new MealPlaningModelNotFound(userId).getMessage()));
+                .andExpect(jsonPath("$.message").value(new MealPlanningModelNotFound(userId).getMessage()));
     }
 }

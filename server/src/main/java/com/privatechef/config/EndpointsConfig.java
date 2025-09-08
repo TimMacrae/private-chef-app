@@ -18,5 +18,5 @@ public final class EndpointsConfig {
     public static final String PREFERENCES = API_BASE + "/preferences";
 
     // MEAL_PLANING
-    public static final String MEAL_PLANING = API_BASE + "/meal-planing";
+    public static final String MEAL_PLANNING = API_BASE + "/meal-planning";
 }

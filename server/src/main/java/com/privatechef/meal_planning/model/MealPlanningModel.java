@@ -1,4 +1,4 @@
-package com.privatechef.meal_planing.model;
+package com.privatechef.meal_planning.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,19 +26,19 @@ public class MealPlanningModel {
     private String userId;
 
     @Builder.Default
-    private MealPlaningDayModel monday = new MealPlaningDayModel();
+    private MealPlanningDayModel monday = new MealPlanningDayModel();
     @Builder.Default
-    private MealPlaningDayModel tuesday = new MealPlaningDayModel();
+    private MealPlanningDayModel tuesday = new MealPlanningDayModel();
     @Builder.Default
-    private MealPlaningDayModel wednesday = new MealPlaningDayModel();
+    private MealPlanningDayModel wednesday = new MealPlanningDayModel();
     @Builder.Default
-    private MealPlaningDayModel thursday = new MealPlaningDayModel();
+    private MealPlanningDayModel thursday = new MealPlanningDayModel();
     @Builder.Default
-    private MealPlaningDayModel friday = new MealPlaningDayModel();
+    private MealPlanningDayModel friday = new MealPlanningDayModel();
     @Builder.Default
-    private MealPlaningDayModel saturday = new MealPlaningDayModel();
+    private MealPlanningDayModel saturday = new MealPlanningDayModel();
     @Builder.Default
-    private MealPlaningDayModel sunday = new MealPlaningDayModel();
+    private MealPlanningDayModel sunday = new MealPlanningDayModel();
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt;

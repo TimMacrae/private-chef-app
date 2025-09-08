@@ -1,12 +1,11 @@
-package com.privatechef.meal_planing;
+package com.privatechef.meal_planning;
 
 
 import com.privatechef.auth.AuthService;
 import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.ExceptionMessage;
-import com.privatechef.exception.MealPlaningModelNotFound;
-import com.privatechef.exception.PreferencesModelNotFound;
-import com.privatechef.meal_planing.model.MealPlanningModel;
+import com.privatechef.exception.MealPlanningModelNotFound;
+import com.privatechef.meal_planning.model.MealPlanningModel;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,9 +18,9 @@ import org.springframework.web.context.request.WebRequest;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(EndpointsConfig.MEAL_PLANING)
-public class MealPlaningController {
-    private final MealPlaningService mealPlaningService;
+@RequestMapping(EndpointsConfig.MEAL_PLANNING)
+public class MealPlanningController {
+    private final MealPlanningService mealPlaningService;
     private final AuthService authService;
 
 
@@ -38,8 +37,8 @@ public class MealPlaningController {
     }
 
     // controller-level exceptions
-    @ExceptionHandler(MealPlaningModelNotFound.class)
-    public ResponseEntity<ExceptionMessage> handleMealPlaningModelNotFound(MealPlaningModelNotFound exception, WebRequest request) {
+    @ExceptionHandler(MealPlanningModelNotFound.class)
+    public ResponseEntity<ExceptionMessage> handleMealPlaningModelNotFound(MealPlanningModelNotFound exception, WebRequest request) {
         ExceptionMessage exceptionMessage = new ExceptionMessage(exception.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(exceptionMessage, HttpStatus.NOT_FOUND);
     }

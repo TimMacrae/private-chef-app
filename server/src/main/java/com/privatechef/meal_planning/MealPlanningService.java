@@ -1,17 +1,17 @@
-package com.privatechef.meal_planing;
+package com.privatechef.meal_planning;
 
 
-import com.privatechef.exception.MealPlaningModelNotFound;
-import com.privatechef.meal_planing.model.MealPlanningModel;
-import com.privatechef.meal_planing.repository.MealPlaningRepository;
+import com.privatechef.exception.MealPlanningModelNotFound;
+import com.privatechef.meal_planning.model.MealPlanningModel;
+import com.privatechef.meal_planning.repository.MealPlanningRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class MealPlaningService {
+public class MealPlanningService {
 
-    private final MealPlaningRepository mealPlaningRepository;
+    private final MealPlanningRepository mealPlaningRepository;
 
     public MealPlanningModel getMealPlaning(String userId) {
 
@@ -23,7 +23,7 @@ public class MealPlaningService {
     }
 
     public MealPlanningModel updateMealPlaning(String userId, MealPlanningModel mealPlaningModel) {
-        MealPlanningModel existingMealPlaningModel = mealPlaningRepository.findByUserId(userId).orElseThrow(() -> new MealPlaningModelNotFound(userId));
+        MealPlanningModel existingMealPlaningModel = mealPlaningRepository.findByUserId(userId).orElseThrow(() -> new MealPlanningModelNotFound(userId));
         existingMealPlaningModel.updateMealPlaningModel(mealPlaningModel);
         return mealPlaningRepository.save(existingMealPlaningModel);
     }

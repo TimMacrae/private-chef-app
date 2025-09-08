@@ -1,4 +1,4 @@
-package com.privatechef.meal_planing.model;
+package com.privatechef.meal_planning.model;
 
 import org.junit.jupiter.api.Test;
 
@@ -33,15 +33,15 @@ class MealPlanningModelTest {
                 .userId("user1")
                 .build();
 
-        MealPlaningDayModel newMonday = new MealPlaningDayModel();
+        MealPlanningDayModel newMonday = new MealPlanningDayModel();
         MealPlanningModel update = MealPlanningModel.builder()
                 .monday(newMonday)
-                .tuesday(new MealPlaningDayModel())
-                .wednesday(new MealPlaningDayModel())
-                .thursday(new MealPlaningDayModel())
-                .friday(new MealPlaningDayModel())
-                .saturday(new MealPlaningDayModel())
-                .sunday(new MealPlaningDayModel())
+                .tuesday(new MealPlanningDayModel())
+                .wednesday(new MealPlanningDayModel())
+                .thursday(new MealPlanningDayModel())
+                .friday(new MealPlanningDayModel())
+                .saturday(new MealPlanningDayModel())
+                .sunday(new MealPlanningDayModel())
                 .build();
 
         original.updateMealPlaningModel(update);
@@ -55,9 +55,9 @@ class MealPlanningModelTest {
         LocalDateTime now = LocalDateTime.now();
         MealPlanningModel model = new MealPlanningModel(
                 "id1", "user1",
-                new MealPlaningDayModel(), new MealPlaningDayModel(), new MealPlaningDayModel(),
-                new MealPlaningDayModel(), new MealPlaningDayModel(), new MealPlaningDayModel(),
-                new MealPlaningDayModel(), now, now
+                new MealPlanningDayModel(), new MealPlanningDayModel(), new MealPlanningDayModel(),
+                new MealPlanningDayModel(), new MealPlanningDayModel(), new MealPlanningDayModel(),
+                new MealPlanningDayModel(), now, now
         );
         assertEquals("id1", model.getId());
         assertEquals("user1", model.getUserId());

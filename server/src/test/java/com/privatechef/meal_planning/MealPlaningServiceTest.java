@@ -1,9 +1,9 @@
-package com.privatechef.meal_planing;
+package com.privatechef.meal_planning;
 
-import com.privatechef.exception.MealPlaningModelNotFound;
-import com.privatechef.meal_planing.model.MealPlaningDayModel;
-import com.privatechef.meal_planing.model.MealPlanningModel;
-import com.privatechef.meal_planing.repository.MealPlaningRepository;
+import com.privatechef.exception.MealPlanningModelNotFound;
+import com.privatechef.meal_planning.model.MealPlanningDayModel;
+import com.privatechef.meal_planning.model.MealPlanningModel;
+import com.privatechef.meal_planning.repository.MealPlanningRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -20,21 +20,21 @@ import static org.mockito.Mockito.when;
 
 class MealPlaningServiceTest {
     @Mock
-    private MealPlaningRepository mealPlaningRepository;
+    private MealPlanningRepository mealPlaningRepository;
 
     @InjectMocks
-    private MealPlaningService mealPlaningService;
+    private MealPlanningService mealPlaningService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mealPlaningService = new MealPlaningService(mealPlaningRepository);
+        mealPlaningService = new MealPlanningService(mealPlaningRepository);
     }
 
     @Test
     void getMealPlaning_WhenNotFound_ShouldCreateDefault() {
         String userId = "user123";
-        MealPlaningDayModel monday = new MealPlaningDayModel();
+        MealPlanningDayModel monday = new MealPlanningDayModel();
         when(mealPlaningRepository.findByUserId(userId)).thenReturn(Optional.empty());
         when(mealPlaningRepository.save(any(MealPlanningModel.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -70,7 +70,7 @@ class MealPlaningServiceTest {
                 .build();
 
         MealPlanningModel updateDto = new MealPlanningModel();
-        MealPlaningDayModel friday = new MealPlaningDayModel(true, true, true);
+        MealPlanningDayModel friday = new MealPlanningDayModel(true, true, true);
         updateDto.setUserId(userId);
         updateDto.setFriday(friday);
 
@@ -95,6 +95,6 @@ class MealPlaningServiceTest {
 
         when(mealPlaningRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
-        assertThrows(MealPlaningModelNotFound.class, () -> mealPlaningService.updateMealPlaning(userId, updateDto));
+        assertThrows(MealPlanningModelNotFound.class, () -> mealPlaningService.updateMealPlaning(userId, updateDto));
     }
 }
