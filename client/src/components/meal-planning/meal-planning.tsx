@@ -86,7 +86,7 @@ export function MealPlanning() {
               !mealPlan.active ? "opacity-50 pointer-events-none" : ""
             }`}
           >
-            <Table>
+            <Table data-testid="meal-planning-table">
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
                   <TableHead className="w-[120px]">Day</TableHead>
@@ -94,6 +94,7 @@ export function MealPlanning() {
                     <TableHead
                       key={mealTime}
                       className="capitalize text-center"
+                      data-testid={`meal-planning-table-head-${mealTime}`}
                     >
                       {mealTime}
                     </TableHead>
@@ -103,7 +104,10 @@ export function MealPlanning() {
               <TableBody>
                 {weekDays.map((day) => (
                   <TableRow key={day} className="hover:bg-transparent">
-                    <TableCell className="font-medium capitalize">
+                    <TableCell
+                      className="font-medium capitalize"
+                      data-testid={`meal-planning-table-cell-${day}`}
+                    >
                       {day}
                     </TableCell>
                     {mealTimes.map((mealTime) => {
@@ -119,9 +123,11 @@ export function MealPlanning() {
                           <Button
                             variant="ghost"
                             className="w-full h-full hover:bg-transparent hover:cursor-pointer"
+                            data-testid={`meal-planning-table-cell-button-${day}-${mealTime}`}
                             onClick={() => handleCellClick(day, mealTime)}
                           >
                             <Check
+                              data-testid={`meal-planning-table-cell-check-${day}-${mealTime}`}
                               className={`mx-auto h-4 w-4 text-primary transition-opacity ${
                                 isChecked ? "opacity-100" : "opacity-0"
                               }`}
@@ -141,6 +147,7 @@ export function MealPlanning() {
             </Label>
             <Switch
               id="toggle-meal-planning"
+              data-testid="meal-planning-switch"
               checked={mealPlan.active}
               onCheckedChange={handleToggleActive}
             />
