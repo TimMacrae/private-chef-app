@@ -9,7 +9,7 @@ export const PreferenceSection = ({
   dataTestId,
 }: PreferenceSectionProps) => {
   return (
-    <div className="mt-4" data-testid={dataTestId}>
+    <div data-testid={dataTestId}>
       <h2
         className="text-lg font-semibold mb-4"
         data-testid={`${dataTestId}-title`}

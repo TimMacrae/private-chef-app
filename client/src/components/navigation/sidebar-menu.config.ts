@@ -73,7 +73,7 @@ export const sidebarMenuSettings: SidebarMenuItem[] = [
   },
   {
     title: "Meal planning",
-    url: "#",
+    url: apiConfig.URL.MEAL_PLANNING,
     icon: Utensils,
     dataTestId: "sidebar-item-meal-planning",
   },
