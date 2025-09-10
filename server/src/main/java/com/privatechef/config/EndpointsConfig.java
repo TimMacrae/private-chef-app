@@ -19,4 +19,7 @@ public final class EndpointsConfig {
 
     // MEAL_PLANING
     public static final String MEAL_PLANNING = API_BASE + "/meal-planning";
+
+    // COLLABORATION
+    public static final String COLLABORATION = API_BASE + "/collaboration";
 }
