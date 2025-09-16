@@ -30,11 +30,11 @@ public class EmailService {
     String brevoInvitationFrontendLink;
 
     @Async
-    public void sendCollaborationInvitationEmail(String toEmail, String toName, String url) {
+    public void sendCollaborationInvitationEmail(String toEmail, String toName, String token) {
         long templateId = 10;
         try {
             Map<String, Object> params = new HashMap<>();
-            params.put("URL", brevoInvitationFrontendLink + url); // will be available in the template as {{ params.URL }}
+            params.put("URL", brevoInvitationFrontendLink + "/" + token); // will be available in the template as {{ params.URL }}
 
             SendSmtpEmail email = new SendSmtpEmail()
                     .sender(new SendSmtpEmailSender()
