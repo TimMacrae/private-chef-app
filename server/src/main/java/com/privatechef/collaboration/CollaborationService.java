@@ -4,8 +4,8 @@ import com.privatechef.collaboration.model.*;
 import com.privatechef.collaboration.repository.CollaborationsRepository;
 import com.privatechef.collaboration.repository.CollaborationsUserRepository;
 import com.privatechef.exception.CollaborationsModelNotFound;
+import com.privatechef.exception.CollaborationsNotAuthorised;
 import com.privatechef.exception.CollaboratorAlreadyExists;
-import com.privatechef.exception.CollaboratorNotFound;
 import com.privatechef.service.EmailService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -98,7 +98,7 @@ public class CollaborationService {
         CollaborationsUserModel user = getOrCreateCollaborationUser(userId);
 
         if (!userId.equals(collaboration.getInviteeId())) {
-            throw new CollaboratorAlreadyExists(userId);
+            throw new CollaborationsNotAuthorised(userId);
         }
 
         if (!user.getReceivedCollaborations().contains(collaboration.getId())) {
