@@ -15,14 +15,20 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "collaboration")
-public class CollaborationModel {
+@Document(collection = "collaborations_users")
+public class CollaborationsUserModel {
     @Id
     private String id;
 
     @Indexed(unique = true)
     private String userId;
+    
+    @Indexed(unique = true)
+    private String email;
 
     @Builder.Default
-    List<CollaboratorModel> collaborations = new ArrayList<>();
+    List<String> invitedCollaborations = new ArrayList<>();
+
+    @Builder.Default
+    List<String> receivedCollaborations = new ArrayList<>();
 }
