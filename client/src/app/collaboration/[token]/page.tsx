@@ -15,8 +15,7 @@ export default async function CollaborationInvitationPage({
     redirect(apiConfig.URL.AUTH_REGISTER);
   }
 
-  const param = await params;
-  const token = param.token;
+  const { token } = params;
   await addCollaborationIdToCollaborationUserByTokenServerAction({ token });
 
   redirect(apiConfig.URL.COLLABORATION);
