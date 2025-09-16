@@ -1,10 +1,7 @@
 package com.privatechef.collaboration;
 
 import com.privatechef.auth.AuthService;
-import com.privatechef.collaboration.model.CollaborationModel;
-import com.privatechef.collaboration.model.CollaborationRequestDto;
-import com.privatechef.collaboration.model.CollaborationUpdateStatusRequestDto;
-import com.privatechef.collaboration.model.CollaboratorModel;
+import com.privatechef.collaboration.model.*;
 import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.CollaborationsModelNotFound;
 import com.privatechef.exception.CollaboratorAlreadyExists;
@@ -17,8 +14,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Map;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping(EndpointsConfig.COLLABORATION)
@@ -27,22 +22,41 @@ public class CollaborationController {
     private final AuthService authService;
 
     @GetMapping
-    public ResponseEntity<CollaborationModel> getCollaboration(@AuthenticationPrincipal Jwt jwt) {
-        CollaborationModel collaboration = collaborationService.getCollaboration(authService.getCurrentUserId(jwt));
+    public ResponseEntity<CollaborationsUserDto> getCollaborationUser(@AuthenticationPrincipal Jwt jwt) {
+        CollaborationsUserDto collaborationUser = collaborationService.getCollaborationUser(authService.getCurrentUserId(jwt));
+        return ResponseEntity.ok(collaborationUser);
+    }
+
+    @PutMapping("/status")
+    public ResponseEntity<CollaborationsModel> updateCollaboratorStatus(@AuthenticationPrincipal Jwt jwt, @RequestBody UpdateStatusRequestDto request) {
+        CollaborationsModel collaboration = collaborationService.updateCollaborationStatus(authService.getCurrentUserId(jwt), request.getToken(), request.getStatus());
         return ResponseEntity.ok(collaboration);
     }
 
-    @PostMapping
-    public ResponseEntity<CollaborationModel> addCollaborator(@AuthenticationPrincipal Jwt jwt, @RequestBody CollaborationRequestDto email) {
-        CollaborationModel collaboration = collaborationService.addCollaborator(authService.getCurrentUserId(jwt), email.getEmail());
+    @PostMapping("/invite")
+    public ResponseEntity<CollaborationsModel> inviteUserByEmail(@AuthenticationPrincipal Jwt jwt, @RequestBody InviteRequestDto request) {
+        CollaborationsModel collaboration = collaborationService.inviteUserByEmail(authService.getCurrentUserId(jwt), request.getEmail());
         return ResponseEntity.ok(collaboration);
     }
 
-    @PutMapping
-    public ResponseEntity<CollaboratorModel> updateCollaboratorStatus(@AuthenticationPrincipal Jwt jwt, @RequestBody CollaborationUpdateStatusRequestDto request) {
-        CollaboratorModel collaborator = collaborationService.updateCollaboratorStatus(authService.getCurrentUserId(jwt), request);
-        return ResponseEntity.ok(collaborator);
+    @PostMapping("/receive/{token}")
+    public ResponseEntity<Void> addCollaborationToUserReceived(@AuthenticationPrincipal Jwt jwt, @PathVariable String token) {
+        collaborationService.addCollaborationIdToCollaborationsUserReceivedByToken(authService.getCurrentUserId(jwt), token);
+        return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping()
+    public ResponseEntity<Void> removeInvitationAsInviter(@AuthenticationPrincipal Jwt jwt, @RequestBody DeleteRequestDto request) {
+        collaborationService.removeInvitationAsInviter(authService.getCurrentUserId(jwt), request.getCollaborationId());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/invitee")
+    public ResponseEntity<Void> removeCollaborationAsInvitee(@AuthenticationPrincipal Jwt jwt, @RequestBody DeleteRequestDto request) {
+        collaborationService.removeCollaborationAsInvitee(authService.getCurrentUserId(jwt), request.getCollaborationId());
+        return ResponseEntity.noContent().build();
+    }
+
 
     // controller-level exceptions
     @ExceptionHandler(CollaborationsModelNotFound.class)
@@ -57,4 +71,11 @@ public class CollaborationController {
         return new ResponseEntity<>(exceptionMessage, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler({IllegalStateException.class, IllegalArgumentException.class})
+    public ResponseEntity<ExceptionMessage> handleIllegalArgumentException(
+            RuntimeException ex, WebRequest request) {
+        return new ResponseEntity<>(
+                new ExceptionMessage(ex.getMessage(), request.getDescription(false)),
+                HttpStatus.BAD_REQUEST);
+    }
 }
