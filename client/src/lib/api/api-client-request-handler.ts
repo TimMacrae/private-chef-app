@@ -44,6 +44,21 @@ export async function clientRequest<T>(
       throw new Error(message);
     }
 
+    // Handle empty responses (e.g., 204 No Content)
+    if (response.status === 204) {
+      const validationResult = schema.safeParse(undefined);
+      if (!validationResult.success) {
+        console.error(
+          "🚨 Client Zod validation failed: Received 204 No Content, but schema expected data.",
+          validationResult.error.issues
+        );
+        throw new Error(
+          "Zod validation failed: Server returned no content, but data was expected."
+        );
+      }
+      return validationResult.data;
+    }
+
     // Parse response
     const rawData = await response.json();
 
