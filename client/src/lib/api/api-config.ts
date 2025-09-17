@@ -20,10 +20,17 @@ export const apiConfig = {
     AUTH_ERROR: "/auth/error",
     PREFERENCES: "/preferences",
     MEAL_PLANNING: "/meal-planning",
+    COLLABORATION: "/collaboration",
   },
   API: {
     PREFERENCES: `${baseUrl}/preferences`,
     MEAL_PLANNING: `${baseUrl}/meal-planning`,
+    COLLABORATION: `${baseUrl}/collaboration`,
+    COLLABORATION_INVITE: `${baseUrl}/collaboration/invite`,
+    COLLABORATION_UPDATE_STATUS: `${baseUrl}/collaboration/status`,
+    COLLABORATION_REMOVE: `${baseUrl}/collaboration`,
+    COLLABORATION_REMOVE_INVITEE: `${baseUrl}/collaboration/invitee`,
+    COLLABORATION_RECEIVE: `${baseUrl}/collaboration/receive/`,
   },
   ENDPOINTS: {
     USER: "/user",
@@ -34,5 +41,6 @@ export const apiConfig = {
     USER_PROFILE: "USER_PROFILE",
     PREFERENCES: "PREFERENCES",
     MEAL_PLANNING: "MEAL_PLANNING",
+    COLLABORATION: "COLLABORATION",
   },
 };

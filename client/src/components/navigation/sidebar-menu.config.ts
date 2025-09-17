@@ -79,7 +79,7 @@ export const sidebarMenuSettings: SidebarMenuItem[] = [
   },
   {
     title: "Collaboration",
-    url: "#",
+    url: apiConfig.URL.COLLABORATION,
     icon: Users,
     dataTestId: "sidebar-item-collaboration",
   },
