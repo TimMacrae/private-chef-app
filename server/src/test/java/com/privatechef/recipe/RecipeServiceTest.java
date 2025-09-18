@@ -7,7 +7,7 @@ import com.privatechef.ai.dto.ChatGptMessageResponse;
 import com.privatechef.exception.PreferencesModelNotFound;
 import com.privatechef.preferences.model.PreferencesModel;
 import com.privatechef.preferences.repository.PreferencesRepository;
-import com.privatechef.recipe.model.MealTime;
+import com.privatechef.recipe.model.MealType;
 import com.privatechef.recipe.model.RecipeGenerateRequestDto;
 import com.privatechef.recipe.model.RecipeModel;
 import com.privatechef.recipe.model.RecipeParseDto;
@@ -67,8 +67,10 @@ class RecipeServiceTest {
         ChatGptMessageResponse response = mock(ChatGptMessageResponse.class);
 
         when(preferencesRepository.findByUserId(userId)).thenReturn(Optional.of(preferences));
-        when(requestDto.getMealTime()).thenReturn(MealTime.LUNCH);
-        when(chatGptPromptService.buildRecipePrompt(MealTime.LUNCH, preferences)).thenReturn(prompt);
+        when(requestDto.getMealType()).thenReturn(MealType.LUNCH);
+        when(requestDto.getServings()).thenReturn(2);
+        when(requestDto.getInstructions()).thenReturn("instructions");
+        when(chatGptPromptService.buildRecipePrompt(MealType.LUNCH, "instructions", 2, preferences)).thenReturn(prompt);
         when(chatGptService.sendMessage(prompt)).thenReturn(response);
 
         RecipeParseDto parseDto = RecipeParseDto.builder()
@@ -81,6 +83,8 @@ class RecipeServiceTest {
                 .budgetLevel(com.privatechef.preferences.model.BudgetLevel.LOW)
                 .cookingSkillLevel(com.privatechef.preferences.model.CookingSkillLevel.BEGINNER)
                 .cuisine("Mexican")
+                .mealType(MealType.LUNCH)
+                .servings(2)
                 .build();
 
         String json = new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(parseDto);
@@ -113,8 +117,8 @@ class RecipeServiceTest {
         ChatGptMessageResponse response = mock(ChatGptMessageResponse.class);
 
         when(preferencesRepository.findByUserId(userId)).thenReturn(Optional.of(preferences));
-        when(requestDto.getMealTime()).thenReturn(MealTime.DINNER);
-        when(chatGptPromptService.buildRecipePrompt(MealTime.DINNER, preferences)).thenReturn(prompt);
+        when(requestDto.getMealType()).thenReturn(MealType.DINNER);
+        when(chatGptPromptService.buildRecipePrompt(MealType.DINNER, "instructions", 1, preferences)).thenReturn(prompt);
         when(chatGptService.sendMessage(prompt)).thenReturn(response);
         when(response.getFirstOutputText()).thenReturn("not a json");
 

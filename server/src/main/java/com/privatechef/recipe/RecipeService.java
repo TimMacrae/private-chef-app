@@ -33,9 +33,9 @@ public class RecipeService {
         return recipeRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
-    public RecipeModel generateRecipe(String userId, RecipeGenerateRequestDto mealTime) {
+    public RecipeModel generateRecipe(String userId, RecipeGenerateRequestDto requestDto) {
         PreferencesModel userPreferences = preferencesRepository.findByUserId(userId).orElseThrow(() -> new PreferencesModelNotFound(userId));
-        ChatGptMessageBody recipePrompt = chatGptPromptService.buildRecipePrompt(mealTime.getMealTime(), userPreferences);
+        ChatGptMessageBody recipePrompt = chatGptPromptService.buildRecipePrompt(requestDto.getMealType(), requestDto.getInstructions(), requestDto.getServings(), userPreferences);
 
         ChatGptMessageResponse chatGptMessageResponse = chatGptService.sendMessage(recipePrompt);
 
@@ -53,11 +53,13 @@ public class RecipeService {
                     .cookingSkillLevel(recipeParseDto.getCookingSkillLevel())
                     .cuisine(recipeParseDto.getCuisine())
                     .prepTimeMinutes(recipeParseDto.getPrepTimeMinutes())
+                    .mealType(recipeParseDto.getMealType())
+                    .servings(recipeParseDto.getServings())
                     .createdAt(LocalDateTime.now())
                     .build();
             return recipeRepository.save(recipeModel);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse recipe from ChatGPT response", e);
+            throw new RuntimeException("Failed to parse recipe from response", e);
         }
     }
 }
