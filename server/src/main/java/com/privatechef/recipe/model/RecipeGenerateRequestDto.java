@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecipeGenerateRequestDto {
-    MealTime mealTime;
+    MealType mealType;
+    String instructions;
+    int servings;
 }

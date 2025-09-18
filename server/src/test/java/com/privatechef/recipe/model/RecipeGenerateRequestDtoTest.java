@@ -10,23 +10,25 @@ class RecipeGenerateRequestDtoTest {
     @Test
     void recipeGenerateRequestDto_testDefaultConstructor_mealTimeIsNull() {
         RecipeGenerateRequestDto dto = new RecipeGenerateRequestDto();
-        assertNull(dto.getMealTime());
+        assertNull(dto.getMealType());
     }
 
     @Test
     void recipeGenerateRequestDto__testAllArgsConstructor_setsMealTime() {
-        RecipeGenerateRequestDto dto = new RecipeGenerateRequestDto(MealTime.BREAKFAST);
-        assertEquals(MealTime.BREAKFAST, dto.getMealTime());
+        RecipeGenerateRequestDto dto = new RecipeGenerateRequestDto(MealType.BREAKFAST, "instructions", 2);
+        assertEquals(MealType.BREAKFAST, dto.getMealType());
+        assertEquals("instructions", dto.getInstructions());
+        assertEquals(2, dto.servings);
     }
 
     @Test
     void recipeGenerateRequestDto_testMealTimeGetter() throws Exception {
         RecipeGenerateRequestDto dto = new RecipeGenerateRequestDto();
 
-        Field field = RecipeGenerateRequestDto.class.getDeclaredField("mealTime");
+        Field field = RecipeGenerateRequestDto.class.getDeclaredField("mealType");
         field.setAccessible(true);
-        field.set(dto, MealTime.LUNCH);
+        field.set(dto, MealType.LUNCH);
 
-        assertEquals(MealTime.LUNCH, dto.getMealTime());
+        assertEquals(MealType.LUNCH, dto.getMealType());
     }
 }
