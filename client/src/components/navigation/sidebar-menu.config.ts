@@ -52,7 +52,7 @@ export const sidebarMenuCommunity: SidebarMenuItem[] = [
   },
   {
     title: "History",
-    url: "#",
+    url: apiConfig.URL.HISTORY,
     icon: GalleryVerticalEnd,
     dataTestId: "sidebar-item-history",
   },
