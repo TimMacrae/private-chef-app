@@ -179,8 +179,8 @@
   --popover-foreground: oklch(0.17 0.03 107);
 
   /* Main Actions - Deep Basil */
-  --primary: #5a8f65; /* #5A8F65 */
-  --primary-foreground: #f7faf7; /* #F7FAF7 */
+  --primary: #b6bda6; /* #5A8F65 */
+  --primary-foreground: oklch(0.17 0.03 107); /* #F7FAF7 */
 
   /* Secondary - Sage */
   --secondary: #a3c37a; /* #A3C37A */
