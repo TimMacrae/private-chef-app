@@ -22,7 +22,9 @@ public class RecipeParseDto {
     private Map<String, String> ingredients;
     private Set<String> instructions;
     private int prepTimeMinutes;
-    BudgetLevel budgetLevel;
-    CookingSkillLevel cookingSkillLevel;
+    private BudgetLevel budgetLevel;
+    private CookingSkillLevel cookingSkillLevel;
     private String cuisine;
+    private MealType mealType;
+    private int servings;
 }
