@@ -1,6 +1,6 @@
 import { getRecipeAction } from "@/app/actions/recipes-server.actions";
 import { LayoutContentContainer } from "@/components/layout/layout-content-container";
-import { RecipeWrapper } from "@/components/recipes/recipe-wrapper";
+import { RecipeId } from "@/components/recipes/recipe-id";
 import { apiConfig } from "@/lib/api/api-config";
 import { auth0 } from "@/lib/auth/auth0";
 import {
@@ -31,7 +31,7 @@ export default async function RecipePage({ params }: Props) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <LayoutContentContainer>
-        <RecipeWrapper id={id} />
+        <RecipeId id={id} />
       </LayoutContentContainer>
     </HydrationBoundary>
   );
