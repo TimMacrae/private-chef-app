@@ -25,4 +25,5 @@ public final class EndpointsConfig {
 
     // RECIPES
     public static final String RECIPES = API_BASE + "/recipes";
+    public static final String RECIPE_GENERATION = "/recipe-generation";
 }
