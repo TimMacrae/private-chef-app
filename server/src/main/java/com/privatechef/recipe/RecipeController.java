@@ -25,7 +25,7 @@ public class RecipeController {
         return ResponseEntity.ok(recipes);
     }
 
-    @PostMapping("/generate-recipe")
+    @PostMapping(EndpointsConfig.RECIPE_GENERATION)
     public ResponseEntity<RecipeModel> generateRecipe(@AuthenticationPrincipal Jwt jwt, @RequestBody RecipeGenerateRequestDto request) {
         RecipeModel recipe = recipeService.generateRecipe(authService.getCurrentUserId(jwt), request);
         return ResponseEntity.ok(recipe);

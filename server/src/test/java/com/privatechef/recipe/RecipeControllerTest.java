@@ -78,7 +78,7 @@ class RecipeControllerTest {
         Mockito.when(authService.getCurrentUserId(any(Jwt.class))).thenReturn(userId);
         Mockito.when(recipeService.generateRecipe(eq(userId), any(RecipeGenerateRequestDto.class))).thenReturn(recipeModel);
 
-        mockMvc.perform(post(EndpointsConfig.RECIPES + "/generate-recipe")
+        mockMvc.perform(post(EndpointsConfig.RECIPES + EndpointsConfig.RECIPE_GENERATION)
                         .with(jwt().jwt(jwt))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDto)))
