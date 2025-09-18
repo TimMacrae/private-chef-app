@@ -55,7 +55,7 @@ export function RecipeGenerationForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-wrap items-start gap-4  md:w-full"
+        className="flex flex-wrap items-start gap-4  w-full max-w-3xl mx-auto my-4md:w-full"
       >
         <FormField
           control={form.control}
