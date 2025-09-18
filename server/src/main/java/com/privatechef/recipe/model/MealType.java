@@ -1,7 +1,9 @@
 package com.privatechef.recipe.model;
 
-public enum MealTime {
+public enum MealType {
     BREAKFAST,
     LUNCH,
     DINNER,
+    SNACK,
+    DESERT
 }
