@@ -2,7 +2,7 @@ package com.privatechef.ai;
 
 import com.privatechef.ai.dto.ChatGptMessageBody;
 import com.privatechef.preferences.model.PreferencesModel;
-import com.privatechef.recipe.model.MealTime;
+import com.privatechef.recipe.model.MealType;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +24,7 @@ public class ChatGptPromptService {
             - Do not add extra fields or text outside the JSON.
             - Always use the metric system g litter etc.
             - Make sure that you make the instructions as clear as possible, in a very detailed way
+            - Make sure that the servings are calculated correctly with the quantity units.
             
             RESPONSE JSON STRUCTURE (use EXACT keys):
             {
@@ -43,16 +44,24 @@ public class ChatGptPromptService {
               "budgetLevel": "LOW | MEDIUM | HIGH",
               "cookingSkillLevel": "BEGINNER | INTERMEDIATE | ADVANCED | KITCHEN_CHEF | MICHELINE_STAR",
               "cuisine": "string",
+              "mealType": "BREAKFAST | LUNCH | DINNER | SNACK | DESERT"
+              "servings": number
             }
             
-            MEAL TIME:
+            MEAL TYPE:
+            %s
+            
+            SERVINGS:
+            %s
+            
+            SPECIAL INSTRUCTIONS:
             %s
             
             USER PREFERENCES:
             %s
             """;
 
-    public ChatGptMessageBody buildRecipePrompt(MealTime mealTime, PreferencesModel userPreferences) {
-        return new ChatGptMessageBody(String.format(MASTER_PROMPT, mealTime, userPreferences));
+    public ChatGptMessageBody buildRecipePrompt(MealType mealType, String instructions, int servings, PreferencesModel userPreferences) {
+        return new ChatGptMessageBody(String.format(MASTER_PROMPT, mealType, instructions, servings, userPreferences));
     }
 }
