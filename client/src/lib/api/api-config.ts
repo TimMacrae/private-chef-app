@@ -21,6 +21,9 @@ export const apiConfig = {
     PREFERENCES: "/preferences",
     MEAL_PLANNING: "/meal-planning",
     COLLABORATION: "/collaboration",
+    RECIPE_GENERATION: "/recipes/recipe-generation",
+    RECIPES: "/recipes",
+    HISTORY: "/history",
   },
   API: {
     PREFERENCES: `${baseUrl}/preferences`,
@@ -31,6 +34,8 @@ export const apiConfig = {
     COLLABORATION_REMOVE: `${baseUrl}/collaboration`,
     COLLABORATION_REMOVE_INVITEE: `${baseUrl}/collaboration/invitee`,
     COLLABORATION_RECEIVE: `${baseUrl}/collaboration/receive/`,
+    RECIPE_GENERATION: `${baseUrl}/recipes/recipe-generation`,
+    RECIPES: `${baseUrl}/recipes`,
   },
   ENDPOINTS: {
     USER: "/user",
@@ -42,5 +47,7 @@ export const apiConfig = {
     PREFERENCES: "PREFERENCES",
     MEAL_PLANNING: "MEAL_PLANNING",
     COLLABORATION: "COLLABORATION",
+    RECIPES: "RECIPES",
+    RECIPE: "RECIPE",
   },
 };
