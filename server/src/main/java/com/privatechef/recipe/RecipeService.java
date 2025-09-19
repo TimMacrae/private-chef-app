@@ -7,6 +7,7 @@ import com.privatechef.ai.ChatGptService;
 import com.privatechef.ai.dto.ChatGptMessageBody;
 import com.privatechef.ai.dto.ChatGptMessageResponse;
 import com.privatechef.exception.PreferencesModelNotFound;
+import com.privatechef.exception.RecipeNotFound;
 import com.privatechef.preferences.model.PreferencesModel;
 import com.privatechef.preferences.repository.PreferencesRepository;
 import com.privatechef.recipe.model.RecipeGenerateRequestDto;
@@ -32,6 +33,11 @@ public class RecipeService {
     public Set<RecipeModel> getRecipes(String userId) {
         return recipeRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
+
+    public RecipeModel getRecipe(String recipeId) {
+        return recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFound(recipeId));
+    }
+
 
     public RecipeModel generateRecipe(String userId, RecipeGenerateRequestDto requestDto) {
         PreferencesModel userPreferences = preferencesRepository.findByUserId(userId).orElseThrow(() -> new PreferencesModelNotFound(userId));
