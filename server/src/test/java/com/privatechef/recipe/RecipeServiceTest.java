@@ -5,6 +5,7 @@ import com.privatechef.ai.ChatGptService;
 import com.privatechef.ai.dto.ChatGptMessageBody;
 import com.privatechef.ai.dto.ChatGptMessageResponse;
 import com.privatechef.exception.PreferencesModelNotFound;
+import com.privatechef.exception.RecipeNotFound;
 import com.privatechef.preferences.model.PreferencesModel;
 import com.privatechef.preferences.repository.PreferencesRepository;
 import com.privatechef.recipe.model.MealType;
@@ -123,5 +124,26 @@ class RecipeServiceTest {
         when(response.getFirstOutputText()).thenReturn("not a json");
 
         assertThrows(RuntimeException.class, () -> recipeService.generateRecipe(userId, requestDto));
+    }
+
+    @Test
+    void recipeService_getRecipe_whenRecipeExists_returnsRecipe() {
+        String recipeId = "abc123";
+        RecipeModel recipe = RecipeModel.builder().id(recipeId).title("Test").build();
+        when(recipeRepository.findById(recipeId)).thenReturn(Optional.of(recipe));
+
+        RecipeModel result = recipeService.getRecipe(recipeId);
+
+        assertEquals(recipe, result);
+        verify(recipeRepository).findById(recipeId);
+    }
+
+    @Test
+    void recipeService_getRecipe_whenRecipeNotFound_throwsException() {
+        String recipeId = "notfound";
+        when(recipeRepository.findById(recipeId)).thenReturn(Optional.empty());
+
+        assertThrows(RecipeNotFound.class, () -> recipeService.getRecipe(recipeId));
+        verify(recipeRepository).findById(recipeId);
     }
 }
