@@ -1,34 +1,3 @@
-// import { z } from "zod";
-
-// // Corresponds to the CollaboratorStatus enum in Java
-// export const collaboratorStatusSchema = z.enum([
-//   "PENDING",
-//   "ACCEPTED",
-//   "DECLINED",
-// ]);
-// export type CollaboratorStatus = z.infer<typeof collaboratorStatusSchema>;
-
-// export const collaboratorSchema = z.object({
-//   collaboratorId: z.string().nullable(),
-//   collaboratorEmail: z.string().email(),
-//   collaboratorStatus: collaboratorStatusSchema,
-//   createdAt: z.string(),
-//   updatedAt: z.string().nullable(),
-// });
-// export type Collaborator = z.infer<typeof collaboratorSchema>;
-
-// export const collaborationSchema = z.object({
-//   id: z.string(),
-//   userId: z.string(),
-//   collaborations: z.array(collaboratorSchema),
-// });
-// export type Collaboration = z.infer<typeof collaborationSchema>;
-
-// export const collaboratorEmailSchema = z.object({
-//   email: z.string().email(),
-// });
-// export type CollaboratorEmail = z.infer<typeof collaboratorEmailSchema>;
-
 import { z } from "zod";
 
 export const collaborationsStatusSchema = z.enum([

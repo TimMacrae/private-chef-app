@@ -1,6 +1,7 @@
 import { getRecipesAction } from "@/app/actions/recipes-server.actions";
+import { History } from "@/components/history/history";
 import { LayoutContentContainer } from "@/components/layout/layout-content-container";
-import { RecipeGeneration } from "@/components/recipes/recipe-generation";
+
 import { apiConfig } from "@/lib/api/api-config";
 import { auth0 } from "@/lib/auth/auth0";
 import {
@@ -10,7 +11,7 @@ import {
 } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 
-export default async function RecipeGenerationPage() {
+export default async function HistoryPage() {
   const session = await auth0.getSession();
 
   if (!session) {
@@ -19,16 +20,18 @@ export default async function RecipeGenerationPage() {
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: [apiConfig.QUERY_KEYS.RECIPES],
-    queryFn: () => getRecipesAction({ page: 0, size: 1 }),
+    queryFn: ({ pageParam = 0 }) =>
+      getRecipesAction({ page: pageParam, size: 10 }),
+    initialPageParam: 0,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <LayoutContentContainer>
-        <RecipeGeneration />
+        <History />
       </LayoutContentContainer>
     </HydrationBoundary>
   );

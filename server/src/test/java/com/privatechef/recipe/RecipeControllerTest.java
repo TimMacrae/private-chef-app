@@ -3,6 +3,7 @@ package com.privatechef.recipe;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.privatechef.auth.AuthService;
 import com.privatechef.config.EndpointsConfig;
+import com.privatechef.exception.RecipeNotFound;
 import com.privatechef.recipe.model.RecipeGenerateRequestDto;
 import com.privatechef.recipe.model.RecipeModel;
 import org.junit.jupiter.api.Test;
@@ -11,17 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Set;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,15 +60,17 @@ class RecipeControllerTest {
     void recipeController_getRecipes_returnsRecipes() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String userId = "user123";
-        Set<RecipeModel> recipes = Set.of(RecipeModel.builder().userId(userId).title("Test").build());
+        List<RecipeModel> recipeList = List.of(RecipeModel.builder().userId(userId).title("Test").build());
+        Page<RecipeModel> recipesPage = new PageImpl<>(recipeList);
+        Pageable pageable = Pageable.unpaged();
 
         Mockito.when(authService.getCurrentUserId(any(Jwt.class))).thenReturn(userId);
-        Mockito.when(recipeService.getRecipes(userId)).thenReturn(recipes);
+        Mockito.when(recipeService.getRecipes(eq(userId), any(Pageable.class))).thenReturn(recipesPage);
 
         mockMvc.perform(get(EndpointsConfig.RECIPES).with(jwt().jwt(jwt)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].userId").value(userId))
-                .andExpect(jsonPath("$[0].title").value("Test"));
+                .andExpect(jsonPath("$.content[0].userId").value(userId))
+                .andExpect(jsonPath("$.content[0].title").value("Test"));
     }
 
     @Test
@@ -85,5 +90,38 @@ class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(userId))
                 .andExpect(jsonPath("$.title").value("Generated"));
+    }
+
+    @Test
+    void recipeController_getRecipe_returnsRecipe() throws Exception {
+        Jwt jwt = Mockito.mock(Jwt.class);
+        String userId = "user123";
+        String recipeId = "recipe123";
+        RecipeModel recipe = RecipeModel.builder().id(recipeId).userId(userId).title("Test").build();
+
+        Mockito.when(authService.getCurrentUserId(any(Jwt.class))).thenReturn(userId);
+        Mockito.when(recipeService.getRecipe(recipeId)).thenReturn(recipe);
+
+        mockMvc.perform(get(EndpointsConfig.RECIPES + "/" + recipeId)
+                        .with(jwt().jwt(jwt)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(userId))
+                .andExpect(jsonPath("$.title").value("Test"))
+                .andExpect(jsonPath("$.id").value(recipeId));
+    }
+
+    @Test
+    void recipeController_getRecipe_shouldThrowException() throws Exception {
+        Jwt jwt = Mockito.mock(Jwt.class);
+        String userId = "user123";
+        String recipeId = "abc123";
+
+        Mockito.when(authService.getCurrentUserId(any(Jwt.class))).thenReturn(userId);
+        Mockito.when(recipeService.getRecipe(recipeId)).thenThrow(new RecipeNotFound(recipeId));
+
+        mockMvc.perform(get(EndpointsConfig.RECIPES + "/" + recipeId)
+                        .with(jwt().jwt(jwt)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Recipe not found with id " + recipeId));
     }
 }

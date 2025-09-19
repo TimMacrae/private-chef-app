@@ -22,6 +22,8 @@ export const apiConfig = {
     MEAL_PLANNING: "/meal-planning",
     COLLABORATION: "/collaboration",
     RECIPE_GENERATION: "/recipes/recipe-generation",
+    RECIPES: "/recipes",
+    HISTORY: "/history",
   },
   API: {
     PREFERENCES: `${baseUrl}/preferences`,
@@ -46,5 +48,6 @@ export const apiConfig = {
     MEAL_PLANNING: "MEAL_PLANNING",
     COLLABORATION: "COLLABORATION",
     RECIPES: "RECIPES",
+    RECIPE: "RECIPE",
   },
 };

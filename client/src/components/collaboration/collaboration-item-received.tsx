@@ -45,8 +45,6 @@ export function CollaborationItemReceived({
   const isPending = collaboration.status === "PENDING";
 
   const handleUpdateInvitation = (status: "ACCEPTED" | "DECLINED") => {
-    // Implement the logic to accept the invitation
-    console.log("Accepting invitation for token:", collaboration.token);
     onUpdateInvitation({
       token: collaboration.token,
       status: status,
