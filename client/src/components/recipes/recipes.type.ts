@@ -12,7 +12,9 @@ export const BudgetLevelSchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
 export const CookingSkillLevelSchema = z.enum([
   "BEGINNER",
   "INTERMEDIATE",
-  "EXPERT",
+  "ADVANCED",
+  "KITCHEN_CHEF",
+  "MICHELINE_STAR",
 ]);
 
 export const RecipeSchema = z.object({
@@ -32,6 +34,16 @@ export const RecipeSchema = z.object({
   createdAt: z.coerce.date(),
 });
 
+export const RecipesPageSchema = z.object({
+  content: z.array(RecipeSchema),
+  page: z.object({
+    size: z.number(),
+    totalElements: z.number(),
+    totalPages: z.number(),
+    number: z.number(),
+  }),
+});
+
 export const RecipesSchema = z.array(RecipeSchema);
 
 export const RecipeGenerateRequestSchema = z.object({
@@ -42,6 +54,6 @@ export const RecipeGenerateRequestSchema = z.object({
 
 // You can also infer TypeScript types from your schemas
 export type Recipe = z.infer<typeof RecipeSchema>;
-export type Recipes = z.infer<typeof RecipesSchema>;
+export type Recipes = z.output<typeof RecipesPageSchema>;
 export type RecipeGenerateRequest = z.infer<typeof RecipeGenerateRequestSchema>;
 export type MealType = z.infer<typeof MealTypeSchema>;
