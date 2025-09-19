@@ -97,7 +97,7 @@ public class CollaborationService {
 
         CollaborationsUserModel user = getOrCreateCollaborationUser(userId);
 
-        if (!userId.equals(collaboration.getInviteeId())) {
+        if (userId.equals(collaboration.getInviterId())) {
             throw new CollaborationsNotAuthorised(userId);
         }
 
