@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { type Recipe } from "../recipes/recipes.type";
-import { Button } from "../ui/button";
 
 import {
   flexRender,
@@ -91,24 +90,6 @@ export function HistoryTable({ recipes }: HistoryTableProps) {
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );
