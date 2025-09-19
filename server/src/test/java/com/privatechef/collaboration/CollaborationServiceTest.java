@@ -169,6 +169,7 @@ class CollaborationServiceTest {
         CollaborationsModel collaboration = CollaborationsModel.builder()
                 .id("collabId")
                 .inviteeId("otherUser")
+                .inviterId(userId)
                 .build();
         CollaborationsUserModel user = CollaborationsUserModel.builder().userId(userId).build();
 
