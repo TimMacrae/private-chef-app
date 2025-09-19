@@ -18,12 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,12 +51,15 @@ class RecipeServiceTest {
 
     @Test
     void recipeService_getRecipes_returnsRecipes() {
-        Set<RecipeModel> recipes = new HashSet<>();
-        when(recipeRepository.findAllByUserId(eq("user1"), any(Sort.class))).thenReturn(recipes);
+        List<RecipeModel> recipeList = List.of(RecipeModel.builder().title("Test").build());
+        Page<RecipeModel> recipesPage = new PageImpl<>(recipeList);
+        Pageable pageable = Pageable.unpaged();
 
-        Set<RecipeModel> result = recipeService.getRecipes("user1");
-        assertSame(recipes, result);
-        verify(recipeRepository).findAllByUserId(eq("user1"), any(Sort.class));
+        when(recipeRepository.findAllByUserId(eq("user1"), eq(pageable))).thenReturn(recipesPage);
+
+        Page<RecipeModel> result = recipeService.getRecipes("user1", pageable);
+        assertSame(recipesPage, result);
+        verify(recipeRepository).findAllByUserId(eq("user1"), eq(pageable));
     }
 
     @Test

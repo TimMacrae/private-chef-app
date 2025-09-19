@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,15 +72,17 @@ class RecipeControllerTest {
     void recipeController_getRecipes_returnsRecipes() throws Exception {
         Jwt jwt = Mockito.mock(Jwt.class);
         String userId = "user123";
-        Set<RecipeModel> recipes = Set.of(RecipeModel.builder().userId(userId).title("Test").build());
+        List<RecipeModel> recipeList = List.of(RecipeModel.builder().userId(userId).title("Test").build());
+        Page<RecipeModel> recipesPage = new PageImpl<>(recipeList);
+        Pageable pageable = Pageable.unpaged();
 
         Mockito.when(authService.getCurrentUserId(any(Jwt.class))).thenReturn(userId);
-        Mockito.when(recipeService.getRecipes(userId)).thenReturn(recipes);
+        Mockito.when(recipeService.getRecipes(eq(userId), any(Pageable.class))).thenReturn(recipesPage);
 
         mockMvc.perform(get(EndpointsConfig.RECIPES).with(jwt().jwt(jwt)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].userId").value(userId))
-                .andExpect(jsonPath("$[0].title").value("Test"));
+                .andExpect(jsonPath("$.content[0].userId").value(userId))
+                .andExpect(jsonPath("$.content[0].title").value("Test"));
     }
 
     @Test
