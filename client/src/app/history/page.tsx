@@ -20,9 +20,11 @@ export default async function HistoryPage() {
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  await queryClient.prefetchInfiniteQuery({
     queryKey: [apiConfig.QUERY_KEYS.RECIPES],
-    queryFn: getRecipesAction,
+    queryFn: ({ pageParam = 0 }) =>
+      getRecipesAction({ page: pageParam, size: 10 }),
+    initialPageParam: 0,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
