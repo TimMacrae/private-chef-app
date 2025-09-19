@@ -13,4 +13,6 @@ public interface RecipeRepository extends MongoRepository<RecipeModel, String> {
     Optional<RecipeModel> findByUserId(String userId);
 
     Set<RecipeModel> findAllByUserId(String userId, Sort sort);
+
+    String id(String id);
 }
