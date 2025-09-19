@@ -21,7 +21,7 @@ export default async function RecipeGenerationPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [apiConfig.QUERY_KEYS.RECIPES],
-    queryFn: getRecipesAction,
+    queryFn: () => getRecipesAction({ page: 0, size: 1 }),
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
