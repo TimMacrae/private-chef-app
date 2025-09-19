@@ -31,7 +31,7 @@ export const sidebarMenu: SidebarMenuItem[] = [
   },
   {
     title: "Recipe",
-    url: "#",
+    url: apiConfig.URL.RECIPE_GENERATION,
     icon: Pizza,
     dataTestId: "sidebar-item-recipe",
   },

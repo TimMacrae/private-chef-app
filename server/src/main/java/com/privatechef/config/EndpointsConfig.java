@@ -22,4 +22,8 @@ public final class EndpointsConfig {
 
     // COLLABORATION
     public static final String COLLABORATION = API_BASE + "/collaboration";
+
+    // RECIPES
+    public static final String RECIPES = API_BASE + "/recipes";
+    public static final String RECIPE_GENERATION = "/recipe-generation";
 }
