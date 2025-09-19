@@ -3,11 +3,13 @@ package com.privatechef.recipe;
 import com.privatechef.auth.AuthService;
 import com.privatechef.config.EndpointsConfig;
 import com.privatechef.exception.ExceptionMessage;
-import com.privatechef.exception.PreferencesModelNotFound;
 import com.privatechef.exception.RecipeNotFound;
 import com.privatechef.recipe.model.RecipeGenerateRequestDto;
 import com.privatechef.recipe.model.RecipeModel;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Set;
 
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(EndpointsConfig.RECIPES)
@@ -25,9 +28,11 @@ public class RecipeController {
     private final AuthService authService;
 
     @GetMapping
-    public ResponseEntity<Set<RecipeModel>> getRecipes(@AuthenticationPrincipal Jwt jwt) {
-        Set<RecipeModel> recipes = recipeService.getRecipes(authService.getCurrentUserId(jwt));
-        return ResponseEntity.ok(recipes);
+    public ResponseEntity<PagedModel<RecipeModel>> getRecipes(
+            @AuthenticationPrincipal Jwt jwt,
+            Pageable pageable) {
+        Page<RecipeModel> recipes = recipeService.getRecipes(authService.getCurrentUserId(jwt), pageable);
+        return ResponseEntity.ok(new PagedModel<>(recipes));
     }
 
     @GetMapping("/{id}")

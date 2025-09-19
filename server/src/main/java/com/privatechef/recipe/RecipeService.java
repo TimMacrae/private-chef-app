@@ -15,6 +15,8 @@ import com.privatechef.recipe.model.RecipeModel;
 import com.privatechef.recipe.model.RecipeParseDto;
 import com.privatechef.recipe.repository.RecipeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,8 @@ public class RecipeService {
     private ChatGptPromptService chatGptPromptService;
 
 
-    public Set<RecipeModel> getRecipes(String userId) {
-        return recipeRepository.findAllByUserId(userId, Sort.by(Sort.Direction.DESC, "createdAt"));
+    public Page<RecipeModel> getRecipes(String userId, Pageable pageable) {
+        return recipeRepository.findAllByUserId(userId, pageable);
     }
 
     public RecipeModel getRecipe(String recipeId) {
