@@ -21,9 +21,9 @@ import {
   DollarSign,
   BarChart,
   Utensils,
-  UtensilsCrossed,
 } from "lucide-react";
 import Image from "next/image";
+import BackgroundImage from "../../../public/269DC9E1-B446-421A-861B-6A6ECEA63E0E.png";
 
 interface RecipeProps {
   recipe: Recipe;
@@ -40,8 +40,14 @@ export function Recipe({ recipe }: RecipeProps) {
             className="w-full h-64 object-cover rounded-t-lg mb-4"
           />
         ) : (
-          <div className="w-full h-64 bg-accent  rounded-t-lg mb-4 flex items-center justify-center">
-            <UtensilsCrossed className="h-24 w-24 text-muted-foreground" />
+          <div className="w-full h-64 relative rounded-t-lg mb-4 overflow-hidden bg-accent flex items-center justify-center">
+            <Image
+              src={BackgroundImage}
+              alt="Background"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         )}
         <CardTitle className="text-3xl font-bold">{recipe.title}</CardTitle>
