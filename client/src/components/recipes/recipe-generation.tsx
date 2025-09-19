@@ -8,10 +8,10 @@ import { useRecipeGeneration } from "./mutation/use-recipe-generation.mutation";
 import { SkeletonRecipe } from "../skeleton/skeleton-recipe";
 
 export function RecipeGeneration() {
-  const { data: recipes } = useRecipes();
+  const { data } = useRecipes(0, 1);
   const { mutate: generateRecipe, isPending } = useRecipeGeneration();
 
-  const recipe = recipes ? recipes[0] : null;
+  const recipe = data?.content[0] ?? null;
   return (
     <>
       <LayoutContentTitle title="Recipe Generation" />
