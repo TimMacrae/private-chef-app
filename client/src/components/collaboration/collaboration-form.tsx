@@ -34,7 +34,6 @@ export function CollaborationForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("👻 => ", data);
     inviteCollaborator(data);
     form.reset();
   }
