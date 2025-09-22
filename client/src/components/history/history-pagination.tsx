@@ -46,7 +46,7 @@ export function HistoryPagination({
   return (
     <Pagination className="mt-6 justify-end">
       <PaginationContent>
-        <PaginationItem>
+        <PaginationItem className="hover:cursor-pointer">
           <PaginationPrevious
             onClick={handlePrevious}
             aria-disabled={!hasPreviousPage || isFetching}
@@ -57,7 +57,7 @@ export function HistoryPagination({
             }
           />
         </PaginationItem>
-        <PaginationItem>
+        <PaginationItem className="hover:cursor-pointer">
           <PaginationNext
             onClick={handleNext}
             aria-disabled={!hasNextPage || isFetching}
