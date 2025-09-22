@@ -25,7 +25,7 @@ export type SidebarMenuItem = {
 export const sidebarMenu: SidebarMenuItem[] = [
   {
     title: "Home",
-    url: "#",
+    url: apiConfig.URL.HOME,
     icon: Home,
     dataTestId: "sidebar-item-home",
   },
